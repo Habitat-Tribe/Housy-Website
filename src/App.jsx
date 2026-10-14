@@ -268,7 +268,7 @@ export default function App() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-2 border-slate-200/80 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-teal-600/25">
+            <div className="w-10 h-10 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-teal-600/25">
               🏠
             </div>
             <div>
@@ -288,7 +288,7 @@ export default function App() {
               <select
                 value={selectedCityId}
                 onChange={(e) => setSelectedCityId(e.target.value)}
-                className="appearance-none bg-slate-50 hover:bg-white border-2 border-slate-300 hover:border-brand-600 text-slate-900 text-xs font-bold py-2 pl-8 pr-9 rounded-xl cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-brand-500 shadow-xs"
+                className="appearance-none bg-slate-50 hover:bg-white border-2 border-slate-300 hover:border-teal-600 text-slate-900 text-xs font-bold py-2 pl-8 pr-9 rounded-xl cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-xs"
               >
                 {CITIES.map((city) => (
                   <option key={city.id} value={city.id}>
@@ -296,7 +296,7 @@ export default function App() {
                   </option>
                 ))}
               </select>
-              <MapPin className="w-4 h-4 text-brand-600 absolute left-2.5 top-2.5 pointer-events-none" />
+              <MapPin className="w-4 h-4 text-teal-600 absolute left-2.5 top-2.5 pointer-events-none" />
               <ChevronDown className="w-4 h-4 text-slate-500 absolute right-2.5 top-2.5 pointer-events-none" />
             </div>
 
@@ -315,10 +315,11 @@ export default function App() {
                   setActiveModal('waitlist');
                 }
               }}
-              className="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md shadow-brand-600/25 active:scale-95 transition-all flex items-center gap-1.5"
+              style={{ backgroundColor: '#0f766e', color: '#ffffff' }}
+              className="bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-md shadow-teal-900/20 active:scale-95 transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer"
             >
               <span>{selectedCity.status === 'LIVE' ? 'Book Site Visit' : 'Notify My City'}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 text-white shrink-0" />
             </button>
           </div>
         </div>
@@ -328,14 +329,14 @@ export default function App() {
       <section className="relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24 bg-gradient-to-b from-teal-50/70 via-slate-50 to-slate-100 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-100/90 border-2 border-teal-300 text-brand-950 text-xs font-bold mb-6 shadow-xs">
-              <Sparkles className="w-4 h-4 text-brand-600" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-100/90 border-2 border-teal-300 text-teal-950 text-xs font-bold mb-6 shadow-xs">
+              <Sparkles className="w-4 h-4 text-teal-600" />
               <span>Urban Company for Whole Home Construction &amp; Renovations</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-950 tracking-tight leading-[1.15] mb-6">
               Build it. Renovate it. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-teal-700 to-slate-900">
+              <span className="text-teal-700">
                 Design it with photo proof.
               </span>
             </h1>
@@ -358,41 +359,41 @@ export default function App() {
 
               <a
                 href="#safety-advisor"
-                className="bg-white hover:bg-teal-50/60 text-slate-900 font-bold text-sm px-6 py-3.5 rounded-xl border-2 border-slate-300 hover:border-brand-600 shadow-md active:scale-95 transition-all flex items-center gap-2"
+                className="bg-white hover:bg-teal-50/60 text-slate-900 font-bold text-sm px-6 py-3.5 rounded-xl border-2 border-slate-300 hover:border-teal-600 shadow-md active:scale-95 transition-all flex items-center gap-2"
               >
-                <ShieldCheck className="w-4 h-4 text-brand-600" />
+                <ShieldCheck className="w-4 h-4 text-teal-600" />
                 <span>Test Structural Safety Advisor</span>
               </a>
             </div>
 
             {/* Core Trust Pillars */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t-2 border-slate-200">
-              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-brand-400 transition-all">
-                <ShieldCheck className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-teal-400 transition-all">
+                <ShieldCheck className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900 uppercase">Escrow Security</h4>
                   <p className="text-[11px] text-slate-600 font-medium mt-0.5">Paid only on approved photo proof</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-brand-400 transition-all">
-                <BadgeCheck className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-teal-400 transition-all">
+                <BadgeCheck className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900 uppercase">Fixed Pricing</h4>
                   <p className="text-[11px] text-slate-600 font-medium mt-0.5">Zero surprise contractor markups</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-brand-400 transition-all">
-                <Camera className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-teal-400 transition-all">
+                <Camera className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900 uppercase">Remote Oversight</h4>
                   <p className="text-[11px] text-slate-600 font-medium mt-0.5">Built for owners not on-site</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-brand-400 transition-all">
-                <Wrench className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-teal-400 transition-all">
+                <Wrench className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900 uppercase">Civil Safety</h4>
                   <p className="text-[11px] text-slate-600 font-medium mt-0.5">Structural &amp; plumbing validation</p>
@@ -407,7 +408,7 @@ export default function App() {
       <section className="py-18 bg-slate-100/70 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-teal-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
               The Remote Homeowner Protocol
             </span>
             <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
@@ -453,12 +454,12 @@ export default function App() {
             ].map((s) => (
               <div
                 key={s.step}
-                className="bg-white border-2 border-slate-200/90 rounded-2xl p-6 relative hover:border-brand-500 hover:shadow-xl transition-all shadow-sm"
+                className="bg-white border-2 border-slate-200/90 rounded-2xl p-6 relative hover:border-teal-500 hover:shadow-xl transition-all shadow-sm"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl font-black text-brand-600 font-mono">{s.step}</span>
+                  <span className="text-2xl font-black text-teal-600 font-mono">{s.step}</span>
                   <div className="w-10 h-10 rounded-xl bg-teal-50 border-2 border-teal-200 flex items-center justify-center text-slate-700">
-                    <s.icon className="w-5 h-5 text-brand-700" />
+                    <s.icon className="w-5 h-5 text-teal-700" />
                   </div>
                 </div>
                 <h3 className="font-bold text-slate-950 text-base mb-1.5">{s.title}</h3>
@@ -473,7 +474,7 @@ export default function App() {
       <section id="estimator" className="py-20 bg-slate-200/60 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-teal-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
               Interactive Tool 01
             </span>
             <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
@@ -502,15 +503,15 @@ export default function App() {
                         onClick={() => setSelectedProjectId(p.id)}
                         className={`text-left p-4 rounded-xl border-2 text-xs transition-all ${
                           isSelected
-                            ? 'border-brand-600 bg-teal-50 text-brand-950 font-bold shadow-md ring-2 ring-brand-500/20'
-                            : 'border-slate-300 bg-white hover:border-brand-500 hover:bg-slate-50 text-slate-800 font-medium shadow-xs'
+                            ? 'border-teal-600 bg-teal-50 text-teal-950 font-bold shadow-md ring-2 ring-teal-500/20'
+                            : 'border-slate-300 bg-white hover:border-teal-500 hover:bg-slate-50 text-slate-800 font-medium shadow-xs'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1">
-                          <span className={`text-sm ${isSelected ? 'font-extrabold text-brand-950' : 'font-bold text-slate-900'}`}>
+                          <span className={`text-sm ${isSelected ? 'font-extrabold text-teal-950' : 'font-bold text-slate-900'}`}>
                             {p.name}
                           </span>
-                          {isSelected && <CheckCircle2 className="w-4 h-4 text-brand-600 shrink-0" />}
+                          {isSelected && <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />}
                         </div>
                         <div className="text-slate-600 text-[11px] line-clamp-1 font-normal">
                           {p.description}
@@ -527,7 +528,7 @@ export default function App() {
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
                     2. Estimated Area / Size
                   </label>
-                  <span className="text-sm font-bold text-brand-900 font-mono bg-teal-100 px-3 py-1 rounded-lg border-2 border-teal-300 shadow-xs">
+                  <span className="text-sm font-bold text-teal-900 font-mono bg-teal-100 px-3 py-1 rounded-lg border-2 border-teal-300 shadow-xs">
                     {areaSqFt.toLocaleString()} {selectedProject.unit}
                   </span>
                 </div>
@@ -538,7 +539,7 @@ export default function App() {
                   step="50"
                   value={areaSqFt}
                   onChange={(e) => setAreaSqFt(Number(e.target.value))}
-                  className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
+                  className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600"
                 />
                 <div className="flex justify-between text-xs text-slate-600 mt-2 font-mono font-semibold">
                   <span>100 sq ft</span>
@@ -562,18 +563,18 @@ export default function App() {
                         onClick={() => setSelectedTierId(tier.id)}
                         className={`p-4 rounded-xl border-2 text-left transition-all ${
                           isSelected
-                            ? 'border-brand-600 bg-teal-50 text-brand-950 font-bold shadow-md ring-2 ring-brand-500/20'
-                            : 'border-slate-300 bg-white hover:border-brand-500 hover:bg-slate-50 text-slate-800 font-medium shadow-xs'
+                            ? 'border-teal-600 bg-teal-50 text-teal-950 font-bold shadow-md ring-2 ring-teal-500/20'
+                            : 'border-slate-300 bg-white hover:border-teal-500 hover:bg-slate-50 text-slate-800 font-medium shadow-xs'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
-                          <span className={`text-xs ${isSelected ? 'font-extrabold text-brand-950' : 'font-bold text-slate-900'}`}>
+                          <span className={`text-xs ${isSelected ? 'font-extrabold text-teal-950' : 'font-bold text-slate-900'}`}>
                             {tier.name}
                           </span>
                         </div>
                         <span className={`inline-block text-[10px] font-mono font-bold px-2 py-0.5 rounded mb-2 ${
                           isSelected
-                            ? 'bg-brand-600 text-white'
+                            ? 'bg-teal-600 text-white'
                             : 'bg-slate-100 border border-slate-300 text-slate-700'
                         }`}>
                           {tier.badge}
@@ -593,7 +594,7 @@ export default function App() {
                   <div>
                     <span className="text-xs uppercase tracking-wider text-slate-400 font-mono">City Calibration</span>
                     <div className="text-base font-bold text-white flex items-center gap-1.5 mt-0.5">
-                      <MapPin className="w-4 h-4 text-brand-400" />
+                      <MapPin className="w-4 h-4 text-teal-400" />
                       <span>{selectedCity.name}, {selectedCity.state}</span>
                     </div>
                   </div>
@@ -610,7 +611,7 @@ export default function App() {
                     ₹{calculatedEstimate.minCost.toLocaleString('en-IN')} – ₹{calculatedEstimate.maxCost.toLocaleString('en-IN')}
                   </div>
                   <div className="text-xs text-slate-400 mt-1 flex items-center gap-2">
-                    <Clock className="w-3.5 h-3.5 text-brand-400" />
+                    <Clock className="w-3.5 h-3.5 text-teal-400" />
                     <span>Estimated Duration: <strong>~{calculatedEstimate.weeks} weeks</strong></span>
                   </div>
                 </div>
@@ -623,7 +624,7 @@ export default function App() {
                   {calculatedEstimate.phases.map((ph, idx) => (
                     <div key={idx} className="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700/80 flex items-center justify-between text-xs">
                       <div className="flex items-center gap-2.5">
-                        <span className="w-5 h-5 rounded-full bg-slate-700 text-brand-300 font-mono font-bold flex items-center justify-center text-[10px]">
+                        <span className="w-5 h-5 rounded-full bg-slate-700 text-teal-300 font-mono font-bold flex items-center justify-center text-[10px]">
                           {idx + 1}
                         </span>
                         <span className="text-slate-200 font-medium">{ph.name}</span>
@@ -645,10 +646,11 @@ export default function App() {
                       setActiveModal('waitlist');
                     }
                   }}
-                  className="w-full bg-brand-500 hover:bg-brand-400 text-slate-950 font-extrabold text-sm py-4 px-6 rounded-xl shadow-lg shadow-teal-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  style={{ backgroundColor: '#14b8a6', color: '#020617' }}
+                  className="w-full bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-sm py-4 px-6 rounded-xl shadow-lg shadow-teal-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>{selectedCity.status === 'LIVE' ? 'Lock Quote via Paid Site Visit (₹499)' : `Join ${selectedCity.name} Waitlist`}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 text-slate-950" />
                 </button>
                 <p className="text-[11px] text-slate-400 text-center mt-2.5">
                   {selectedCity.status === 'LIVE'
@@ -665,7 +667,7 @@ export default function App() {
       <section id="safety-advisor" className="py-20 bg-slate-50 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-teal-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
               Safety-Critical Engine (lib/advisor.ts)
             </span>
             <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
@@ -682,7 +684,7 @@ export default function App() {
             <div className="bg-white rounded-2xl border-2 border-slate-300 shadow-lg p-6 sm:p-8 flex flex-col justify-between hover:border-slate-400 transition-all">
               <div>
                 <div className="flex items-center gap-2.5 mb-5 pb-3 border-b border-slate-200">
-                  <div className="w-9 h-9 rounded-xl bg-brand-100 flex items-center justify-center text-brand-700">
+                  <div className="w-9 h-9 rounded-xl bg-teal-100 flex items-center justify-center text-teal-700">
                     <Hammer className="w-5 h-5" />
                   </div>
                   <div>
@@ -709,8 +711,8 @@ export default function App() {
                             onClick={() => setWallType(t.id)}
                             className={`p-3 rounded-xl border-2 text-xs font-bold text-left transition-all ${
                               isSelected
-                                ? 'border-brand-600 bg-teal-50 text-brand-950 shadow-md ring-2 ring-brand-500/20'
-                                : 'border-slate-300 bg-slate-50 hover:border-brand-500 hover:bg-white text-slate-800 shadow-xs'
+                                ? 'border-teal-600 bg-teal-50 text-teal-950 shadow-md ring-2 ring-teal-500/20'
+                                : 'border-slate-300 bg-slate-50 hover:border-teal-500 hover:bg-white text-slate-800 shadow-xs'
                             }`}
                           >
                             {t.label}
@@ -728,7 +730,7 @@ export default function App() {
                       <select
                         value={floorPosition}
                         onChange={(e) => setFloorPosition(e.target.value)}
-                        className="w-full bg-slate-50 hover:bg-white border-2 border-slate-300 focus:bg-white focus:border-brand-600 text-xs font-bold rounded-xl p-3 text-slate-900 shadow-xs"
+                        className="w-full bg-slate-50 hover:bg-white border-2 border-slate-300 focus:bg-white focus:border-teal-600 text-xs font-bold rounded-xl p-3 text-slate-900 shadow-xs"
                       >
                         <option value="ground">Ground Floor</option>
                         <option value="upper">Intermediate Floor</option>
@@ -743,7 +745,7 @@ export default function App() {
                       <select
                         value={wallThickness}
                         onChange={(e) => setWallThickness(e.target.value)}
-                        className="w-full bg-slate-50 hover:bg-white border-2 border-slate-300 focus:bg-white focus:border-brand-600 text-xs font-bold rounded-xl p-3 text-slate-900 shadow-xs"
+                        className="w-full bg-slate-50 hover:bg-white border-2 border-slate-300 focus:bg-white focus:border-teal-600 text-xs font-bold rounded-xl p-3 text-slate-900 shadow-xs"
                       >
                         <option value="4.5-inch">4.5 inch (Partition)</option>
                         <option value="9-inch">9 inch (Structural/Outer)</option>
@@ -782,7 +784,7 @@ export default function App() {
                       <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
                         Distance from Main Soil Stack
                       </label>
-                      <span className="text-xs font-mono font-bold text-brand-900 bg-teal-100 px-3 py-1 rounded-lg border-2 border-teal-300 shadow-xs">
+                      <span className="text-xs font-mono font-bold text-teal-900 bg-teal-100 px-3 py-1 rounded-lg border-2 border-teal-300 shadow-xs">
                         {drainDistance} Feet
                       </span>
                     </div>
@@ -793,7 +795,7 @@ export default function App() {
                       step="1"
                       value={drainDistance}
                       onChange={(e) => setDrainDistance(Number(e.target.value))}
-                      className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
+                      className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600"
                     />
                     <div className="flex justify-between text-xs text-slate-600 mt-2 font-mono font-semibold">
                       <span>3 ft (Adjacent)</span>
@@ -819,8 +821,8 @@ export default function App() {
                             onClick={() => setSlabType(s.id)}
                             className={`p-3 rounded-xl border-2 text-xs font-bold text-left transition-all ${
                               isSelected
-                                ? 'border-brand-600 bg-teal-50 text-brand-950 shadow-md ring-2 ring-brand-500/20'
-                                : 'border-slate-300 bg-slate-50 hover:border-brand-500 hover:bg-white text-slate-800 shadow-xs'
+                                ? 'border-teal-600 bg-teal-50 text-teal-950 shadow-md ring-2 ring-teal-500/20'
+                                : 'border-slate-300 bg-slate-50 hover:border-teal-500 hover:bg-white text-slate-800 shadow-xs'
                             }`}
                           >
                             {s.label}
@@ -849,7 +851,7 @@ export default function App() {
       <section className="py-20 bg-slate-100/70 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-teal-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
               The Market Gap
             </span>
             <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
@@ -867,7 +869,7 @@ export default function App() {
                   <th className="py-4 px-5 font-bold text-slate-900">Feature &amp; Guarantee</th>
                   <th className="py-4 px-5 font-bold text-slate-600">Unorganized Local Thekedar</th>
                   <th className="py-4 px-5 font-bold text-slate-600">Design Portals (Livspace/Homelane)</th>
-                  <th className="py-4 px-5 font-extrabold text-brand-950 bg-teal-100 border-x-2 border-teal-300">Housy Managed OS</th>
+                  <th className="py-4 px-5 font-extrabold text-teal-950 bg-teal-100 border-x-2 border-teal-300">Housy Managed OS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
@@ -951,7 +953,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-teal-600/20">
+              <div className="w-9 h-9 rounded-xl bg-teal-600 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-teal-600/20">
                 🏠
               </div>
               <div>
@@ -965,7 +967,7 @@ export default function App() {
                 href="https://github.com/Habitat-Tribe/Housy"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-brand-600 flex items-center gap-1"
+                className="hover:text-teal-600 flex items-center gap-1"
               >
                 <span>GitHub Repository</span>
                 <ExternalLink className="w-3.5 h-3.5" />
@@ -974,7 +976,7 @@ export default function App() {
                 href="https://github.com/Habitat-Tribe/Housy/blob/main/docs/SPEC.md"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-brand-600"
+                className="hover:text-teal-600"
               >
                 Architecture Spec
               </a>
@@ -982,7 +984,7 @@ export default function App() {
                 href="https://github.com/Habitat-Tribe/Housy/blob/main/ROADMAP.md"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-brand-600"
+                className="hover:text-teal-600"
               >
                 Roadmap
               </a>
@@ -990,7 +992,7 @@ export default function App() {
                 href="https://1997agarwal.github.io"
                 target="_blank"
                 rel="noreferrer"
-                className="hover:text-brand-600 text-brand-700 font-bold"
+                className="hover:text-teal-600 text-teal-700 font-bold"
               >
                 Architected by Harshit Agarwal ↗
               </a>
@@ -1041,7 +1043,7 @@ export default function App() {
                   required
                   type="text"
                   placeholder="e.g. Rahul Sharma"
-                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 shadow-xs"
+                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs"
                 />
               </div>
 
@@ -1056,14 +1058,14 @@ export default function App() {
                     type="tel"
                     pattern="[0-9]{10}"
                     placeholder="9876543210"
-                    className="w-full text-xs font-semibold p-3.5 rounded-r-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 shadow-xs"
+                    className="w-full text-xs font-semibold p-3.5 rounded-r-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs"
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-800 mb-1.5">Planned Project Type</label>
-                <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 text-slate-900 shadow-xs">
+                <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs">
                   <option>Full House Construction</option>
                   <option>Modular Kitchen Renovation</option>
                   <option>Bathroom Remodel &amp; Waterproofing</option>
@@ -1074,7 +1076,8 @@ export default function App() {
 
               <button
                 type="submit"
-                className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                style={{ backgroundColor: '#0d9488', color: '#ffffff' }}
+                className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
               >
                 Join Priority Notification Queue
               </button>
@@ -1119,7 +1122,7 @@ export default function App() {
                   required
                   type="text"
                   placeholder="e.g. Ananya Verma"
-                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 shadow-xs"
+                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs"
                 />
               </div>
 
@@ -1134,7 +1137,7 @@ export default function App() {
                     type="tel"
                     pattern="[0-9]{10}"
                     placeholder="9876543210"
-                    className="w-full text-xs font-semibold p-3.5 rounded-r-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 shadow-xs"
+                    className="w-full text-xs font-semibold p-3.5 rounded-r-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs"
                   />
                 </div>
               </div>
@@ -1145,7 +1148,7 @@ export default function App() {
                   required
                   type="text"
                   placeholder="e.g. Civil Lines / Gomti Nagar"
-                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 shadow-xs"
+                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs"
                 />
               </div>
 
@@ -1156,7 +1159,8 @@ export default function App() {
 
               <button
                 type="submit"
-                className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                style={{ backgroundColor: '#0d9488', color: '#ffffff' }}
+                className="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs py-3.5 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
               >
                 Confirm Site Visit Booking
               </button>
@@ -1176,7 +1180,7 @@ export default function App() {
               <X className="w-5 h-5" />
             </button>
 
-            <div className="w-10 h-10 rounded-xl bg-teal-100 border-2 border-teal-300 flex items-center justify-center text-brand-700 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-teal-100 border-2 border-teal-300 flex items-center justify-center text-teal-700 mb-4">
               <Users className="w-5 h-5" />
             </div>
 
@@ -1201,14 +1205,14 @@ export default function App() {
                   required
                   type="text"
                   placeholder="e.g. Apex Civil Contractors"
-                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 shadow-xs"
+                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-800 mb-1.5">Primary Trade</label>
-                  <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 text-slate-900 shadow-xs">
+                  <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs">
                     <option>General Contractor</option>
                     <option>Masonry / Civil</option>
                     <option>Interior Designer</option>
@@ -1218,7 +1222,7 @@ export default function App() {
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-800 mb-1.5">City of Operation</label>
-                  <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 text-slate-900 shadow-xs">
+                  <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs">
                     {CITIES.map(c => (
                       <option key={c.id} value={c.name}>{c.name}</option>
                     ))}
@@ -1237,7 +1241,7 @@ export default function App() {
                     type="tel"
                     pattern="[0-9]{10}"
                     placeholder="9876543210"
-                    className="w-full text-xs font-semibold p-3.5 rounded-r-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 shadow-xs"
+                    className="w-full text-xs font-semibold p-3.5 rounded-r-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs"
                   />
                 </div>
               </div>
@@ -1248,7 +1252,7 @@ export default function App() {
                   required
                   type="text"
                   placeholder="e.g. 12 crew members, 8 years experience"
-                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/20 text-slate-900 shadow-xs"
+                  className="w-full text-xs font-semibold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500/20 text-slate-900 shadow-xs"
                 />
               </div>
 

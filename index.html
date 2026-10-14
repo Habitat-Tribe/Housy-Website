@@ -12,28 +12,6 @@
       tailwind.config = {
         theme: {
           extend: {
-            colors: {
-              brand: {
-                50: '#F0FDFA',
-                100: '#CCFBF1',
-                200: '#99F6E4',
-                300: '#5EEAD4',
-                400: '#2DD4BF',
-                500: '#14B8A6',
-                600: '#0D9488',
-                700: '#0F766E',
-                800: '#115E59',
-                900: '#134E4A',
-                950: '#042F2E',
-              },
-              amber: {
-                50: '#FFFBEB',
-                100: '#FEF3C7',
-                200: '#FDE68A',
-                500: '#F59E0B',
-                600: '#D97706',
-              }
-            },
             fontFamily: {
               sans: ['Plus Jakarta Sans', system-ui, -apple-system, sans-serif],
             }
@@ -53,26 +31,39 @@
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
       }
+      /* Explicit high-contrast utilities to guarantee rendering */
+      .bg-teal-600 { background-color: #0d9488 !important; }
+      .bg-teal-700 { background-color: #0f766e !important; }
+      .bg-teal-800 { background-color: #115e59 !important; }
+      .text-teal-600 { color: #0d9488 !important; }
+      .text-teal-700 { color: #0f766e !important; }
+      .text-teal-800 { color: #115e59 !important; }
+      .text-teal-900 { color: #134e4a !important; }
+      .text-teal-950 { color: #042f2e !important; }
+      .text-white { color: #ffffff !important; }
       /* Custom high-contrast slider thumb */
       input[type=range]::-webkit-slider-thumb {
         width: 22px;
         height: 22px;
-        background: #0D9488;
+        background: #0d9488;
         border: 3px solid #ffffff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        border-radius: 50%;
         cursor: pointer;
+        -webkit-appearance: none;
       }
       input[type=range]::-moz-range-thumb {
         width: 22px;
         height: 22px;
-        background: #0D9488;
+        background: #0d9488;
         border: 3px solid #ffffff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        border-radius: 50%;
         cursor: pointer;
       }
     </style>
   </head>
-  <body class="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-teal-500 selection:text-white">
+  <body class="bg-slate-50 text-slate-900 antialiased selection:bg-teal-500 selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
