@@ -21,7 +21,12 @@ import {
   HelpCircle,
   X,
   ChevronDown,
-  ExternalLink
+  ExternalLink,
+  Zap,
+  Droplets,
+  Paintbrush,
+  Star,
+  UserCheck
 } from 'lucide-react';
 
 // 20 Configured Indian Cities
@@ -48,83 +53,571 @@ const CITIES = [
   { id: 'patna', name: 'Patna', state: 'Bihar', status: 'WAITLIST', multiplier: 0.98 },
 ];
 
-// Project Types Catalog
-const PROJECT_TYPES = [
+// Expanded Multi-Category Project Archetypes
+export const EXPANDED_PROJECT_ARCHETYPES = [
+  // 1. Build Archetypes
   {
-    id: 'build',
-    name: 'Full House Construction',
-    category: 'Build',
+    id: 'build-turnkey',
+    category: 'build',
+    categoryLabel: 'Whole Home Construction',
+    name: 'Turnkey Villa / Kothi Construction',
+    mappedId: 'build_house',
     baseRate: 1850,
     unit: 'sq ft built-up',
+    minArea: 500,
+    maxArea: 5000,
+    stepArea: 100,
+    defaultArea: 1500,
     durationWeeksPer1k: 24,
-    description: 'RCC structure, brickwork, plastering, electrical, plumbing, flooring & turnkey finishes.',
+    tradeLead: 'Master Mason & Shuttering Crew',
+    tradeLeadRole: 'Raj Mistri + Structural Team',
+    description: 'RCC frame, brickwork, conduit plastering, plumbing, sanitary, flooring & turnkey finishing.',
     phases: [
-      { name: 'Excavation & Foundation', share: 0.20 },
-      { name: 'RCC Frame & Slab Casting', share: 0.30 },
-      { name: 'Brickwork & Conduit Plastering', share: 0.25 },
-      { name: 'Flooring, Sanitary & Turnkey Paint', share: 0.25 },
+      { name: 'Excavation & Plinth Foundation', share: 0.20 },
+      { name: 'RCC Columns, Beams & Slab Casting', share: 0.30 },
+      { name: '9" Brick Masonry & Plastering', share: 0.25 },
+      { name: 'Flooring, Sanitary & Turnkey Handover', share: 0.25 },
     ]
   },
   {
-    id: 'kitchen',
-    name: 'Modular Kitchen Renovation',
-    category: 'Renovate',
+    id: 'build-floor',
+    category: 'build',
+    categoryLabel: 'Whole Home Construction',
+    name: 'Floor Addition / Extra Storey (दूसरी मंज़िल)',
+    mappedId: 'build_house',
+    baseRate: 1550,
+    unit: 'sq ft built-up',
+    minArea: 400,
+    maxArea: 3000,
+    stepArea: 50,
+    defaultArea: 1000,
+    durationWeeksPer1k: 16,
+    tradeLead: 'Structural Civil Contractor',
+    tradeLeadRole: 'Engineer-Led Masonry Team',
+    description: 'Existing roof load inspection, light-weight column extension, slab casting & outer brickwork.',
+    phases: [
+      { name: 'Roof Structural Load Audit', share: 0.15 },
+      { name: 'Column Extension & Slab Shuttering', share: 0.35 },
+      { name: 'Brickwork & Outer Weather Plaster', share: 0.25 },
+      { name: 'Internal Flooring, Windows & Paint', share: 0.25 },
+    ]
+  },
+  {
+    id: 'build-boundary',
+    category: 'build',
+    categoryLabel: 'Whole Home Construction',
+    name: 'Boundary Wall & Entrance Gate Package',
+    mappedId: 'build_house',
+    baseRate: 420,
+    unit: 'running ft',
+    minArea: 40,
+    maxArea: 500,
+    stepArea: 10,
+    defaultArea: 120,
+    durationWeeksPer1k: 8,
+    tradeLead: 'Masonry Thekedar',
+    tradeLeadRole: 'Raj Mistri Gang',
+    description: 'Deep trench foundation, 9" brick masonry, coping cement plaster & steel gate installation.',
+    phases: [
+      { name: 'Trench Digging & Brick Foundation', share: 0.25 },
+      { name: 'Pillar Reinforcement & Brick Wall', share: 0.35 },
+      { name: 'Cement Coping & Both-Side Plaster', share: 0.20 },
+      { name: 'Gate Fixing, Paint & Coping Light Points', share: 0.20 },
+    ]
+  },
+  {
+    id: 'build-terrace',
+    category: 'build',
+    categoryLabel: 'Whole Home Construction',
+    name: 'Terrace Waterproofing & Heat Shield',
+    mappedId: 'build_house',
+    baseRate: 95,
+    unit: 'sq ft terrace',
+    minArea: 300,
+    maxArea: 3000,
+    stepArea: 50,
+    defaultArea: 800,
+    durationWeeksPer1k: 4,
+    tradeLead: 'DryGuard Waterproofing Pro',
+    tradeLeadRole: 'Waterproofing Specialist',
+    description: 'Crack injection grouting, 3-coat elastomeric membrane, protective screed & slope correction.',
+    phases: [
+      { name: 'Surface Cleaning & Crack Grouting', share: 0.20 },
+      { name: 'Elastomeric Polymer Membrane (3 Coats)', share: 0.35 },
+      { name: 'Protective Polymer Screed Bedding', share: 0.25 },
+      { name: '48-Hour Ponding Water Leak Test', share: 0.20 },
+    ]
+  },
+
+  // 2. Renovate Archetypes
+  {
+    id: 'renovate-kitchen',
+    category: 'renovate',
+    categoryLabel: 'Room & Space Renovations',
+    name: 'Modular Kitchen Turnkey Renovation',
+    mappedId: 'renovate_kitchen',
     baseRate: 1450,
     unit: 'sq ft carpet',
-    durationWeeksPer1k: 4,
-    description: 'BWP plywood carcasses, acrylic/laminate shutters, quartz counter, chimney & plumbing.',
+    minArea: 60,
+    maxArea: 400,
+    stepArea: 10,
+    defaultArea: 120,
+    durationWeeksPer1k: 12,
+    tradeLead: 'Modular Carpenter & MEP Team',
+    tradeLeadRole: 'Badhai & Plumber Gang',
+    description: 'BWP 710 marine ply carcasses, acrylic/laminate shutters, quartz counter, chimney & plumbing.',
     phases: [
-      { name: 'Demolition & Wall Prep', share: 0.15 },
-      { name: 'Underground Plumbing & Wiring', share: 0.25 },
-      { name: 'Granite/Quartz Countertop & Tiles', share: 0.25 },
-      { name: 'Cabinetry & Appliance Fit-off', share: 0.35 },
+      { name: 'Old Tile Demolition & Debris Clear', share: 0.15 },
+      { name: 'Concealed CPVC Water & Power Wiring', share: 0.25 },
+      { name: 'Quartz/Granite Platform & Backsplash', share: 0.25 },
+      { name: 'Modular Carcasses, Soft-Close & Sink', share: 0.35 },
     ]
   },
   {
-    id: 'bathroom',
+    id: 'renovate-bathroom',
+    category: 'renovate',
+    categoryLabel: 'Room & Space Renovations',
     name: 'Bathroom Remodel & Waterproofing',
-    category: 'Renovate',
+    mappedId: 'renovate_bath',
     baseRate: 1650,
-    unit: 'sq ft',
-    durationWeeksPer1k: 3,
+    unit: 'sq ft floor',
+    minArea: 30,
+    maxArea: 200,
+    stepArea: 5,
+    defaultArea: 55,
+    durationWeeksPer1k: 10,
+    tradeLead: 'Master Plumber & Tiler',
+    tradeLeadRole: 'Sanitary & Waterproofing Team',
     description: 'Complete strip-down, 3-layer elastomeric waterproofing, concealed plumbing & vanity.',
     phases: [
-      { name: 'Tile Stripping & Debris Removal', share: 0.15 },
-      { name: 'Core Concealed CPVC Plumbing', share: 0.30 },
-      { name: '3-Layer Membrane Waterproofing', share: 0.25 },
-      { name: 'Vitrified Wall Tiling & Diverters', share: 0.30 },
+      { name: 'Tile Stripping & Waste Stack Prep', share: 0.15 },
+      { name: 'Core Concealed CPVC Plumbing & Diverter', share: 0.30 },
+      { name: '3-Layer Waterproofing & Ponding Test', share: 0.25 },
+      { name: 'Vitrified Wall Tiling & Sanitary Fit-off', share: 0.30 },
     ]
   },
   {
-    id: 'interiors',
-    name: 'Complete Home Interior Architecture',
-    category: 'Interiors',
+    id: 'renovate-structural',
+    category: 'renovate',
+    categoryLabel: 'Room & Space Renovations',
+    name: 'Wall Removal & Spatial Reconfiguration',
+    mappedId: 'wall_break',
+    baseRate: 750,
+    unit: 'sq ft affected',
+    minArea: 40,
+    maxArea: 400,
+    stepArea: 10,
+    defaultArea: 100,
+    durationWeeksPer1k: 6,
+    tradeLead: 'Chartered Structural Engineer',
+    tradeLeadRole: 'Engineer-Supervised Demolition',
+    description: 'Non-structural partition removal, RSJ steel beam installation, lintel support & plaster.',
+    phases: [
+      { name: 'Structural Safety Assessment Sign-off', share: 0.20 },
+      { name: 'Acrow Prop Shoring & Load Transfer', share: 0.25 },
+      { name: 'Controlled Diamond Blade Cutting', share: 0.30 },
+      { name: 'Steel Beam Encapsulation & Plaster', share: 0.25 },
+    ]
+  },
+  {
+    id: 'renovate-full',
+    category: 'renovate',
+    categoryLabel: 'Room & Space Renovations',
+    name: 'Full Home Civil & MEP Renovation',
+    mappedId: 'build_house',
+    baseRate: 1150,
+    unit: 'sq ft built-up',
+    minArea: 500,
+    maxArea: 4000,
+    stepArea: 50,
+    defaultArea: 1400,
+    durationWeeksPer1k: 18,
+    tradeLead: 'General Civil Contractor',
+    tradeLeadRole: 'Multi-Trade Supervisor',
+    description: 'Full house replumbing, rewiring, tile replacement, crack repair, false ceiling & repaint.',
+    phases: [
+      { name: 'MEP Audit & Selective Demolition', share: 0.15 },
+      { name: 'Core Plumbing & Electrical Chasing', share: 0.30 },
+      { name: 'Vitrified Tile Flooring & Doors', share: 0.30 },
+      { name: 'Putty, Primer, Royale Paint & Lighting', share: 0.25 },
+    ]
+  },
+
+  // 3. Interiors Archetypes
+  {
+    id: 'interiors-full',
+    category: 'interiors',
+    categoryLabel: 'Interior Architecture & Woodwork',
+    name: 'Turnkey Luxury Interior Architecture',
+    mappedId: 'interior_full',
     baseRate: 1350,
     unit: 'sq ft carpet',
-    durationWeeksPer1k: 8,
+    minArea: 400,
+    maxArea: 3500,
+    stepArea: 50,
+    defaultArea: 1100,
+    durationWeeksPer1k: 12,
+    tradeLead: 'Interior Designer & Lead Carpenter',
+    tradeLeadRole: '3D Designer + Factory Woodwork',
     description: 'Designer false ceiling, modular wardrobes, TV consoles, ambient lighting & royale paint.',
     phases: [
       { name: '3D CAD Moodboard & Layout Sign-off', share: 0.15 },
-      { name: 'Gypsum Ceiling & Ambient Wiring', share: 0.25 },
-      { name: 'Factory Modular Wardrobes & Units', share: 0.35 },
-      { name: 'Premium Texture Paint & Fixtures', share: 0.25 },
+      { name: 'Gypsum False Ceiling & Profile Lighting', share: 0.25 },
+      { name: 'Factory Modular Wardrobes & TV Consoles', share: 0.35 },
+      { name: 'Premium Texture Paint, Wallpaper & Polish', share: 0.25 },
     ]
   },
   {
-    id: 'structural',
-    name: 'Wall Removal & Spatial Reconfiguration',
-    category: 'Renovate',
-    baseRate: 750,
-    unit: 'sq ft affected',
-    durationWeeksPer1k: 2,
-    description: 'Non-structural partition removal, RSJ steel beam installation, lintel support & plaster.',
+    id: 'interiors-wardrobe',
+    category: 'interiors',
+    categoryLabel: 'Interior Architecture & Woodwork',
+    name: 'Modular Wardrobes & Vanity Package',
+    mappedId: 'interior_full',
+    baseRate: 950,
+    unit: 'sq ft wardrobe front',
+    minArea: 50,
+    maxArea: 500,
+    stepArea: 10,
+    defaultArea: 150,
+    durationWeeksPer1k: 8,
+    tradeLead: 'Lead Modular Carpenter (बढ़ई)',
+    tradeLeadRole: 'Cabinetry Specialist',
+    description: 'Floor-to-ceiling wardrobes with loft, soft-close hardware, pull-out drawers & LED profiles.',
     phases: [
-      { name: 'Structural Safety Assessment', share: 0.20 },
-      { name: 'Temporary Acrow Prop Shoring', share: 0.25 },
-      { name: 'Controlled Diamond Blade Cutting', share: 0.30 },
-      { name: 'Beam Encapsulation & Surface Finish', share: 0.25 },
+      { name: 'Laser Site Measurement & Cut-list', share: 0.15 },
+      { name: 'BWP Carcass Fabrication & Edgebinding', share: 0.35 },
+      { name: 'Hettich/Ebco Hardware & Drawer Channels', share: 0.25 },
+      { name: 'Laminate / Acrylic Shutter Fit-off', share: 0.25 },
     ]
   },
+  {
+    id: 'interiors-ceiling',
+    category: 'interiors',
+    categoryLabel: 'Interior Architecture & Woodwork',
+    name: 'Designer False Ceiling & Ambient Lighting',
+    mappedId: 'interior_full',
+    baseRate: 165,
+    unit: 'sq ft ceiling',
+    minArea: 200,
+    maxArea: 2500,
+    stepArea: 50,
+    defaultArea: 800,
+    durationWeeksPer1k: 6,
+    tradeLead: 'Ceiling Master & Electrician',
+    tradeLeadRole: 'Gypsum & Wiring Team',
+    description: 'Saint-Gobain gypsum boards, GI framing, cove channels, COB spotlight points & smooth primer.',
+    phases: [
+      { name: 'Ceiling Level Laser Marking & GI Grid', share: 0.25 },
+      { name: 'Gypsum Board Screwing & Joint Taping', share: 0.30 },
+      { name: 'Concealed Wiring & Profile Light Groove', share: 0.25 },
+      { name: 'Smooth Joint Plaster & Primer Coating', share: 0.20 },
+    ]
+  },
+
+  // 4. Direct Labor & Specialist Packages
+  {
+    id: 'labor-masonry',
+    category: 'labor',
+    categoryLabel: 'Direct Trade Crew & Labor Theka',
+    name: 'Dedicated Masonry Gang (राज मिस्त्री ठेका)',
+    mappedId: 'build_house',
+    baseRate: 65,
+    unit: 'sq ft brick/plaster',
+    minArea: 200,
+    maxArea: 3000,
+    stepArea: 50,
+    defaultArea: 600,
+    durationWeeksPer1k: 4,
+    tradeLead: 'Master Mason & Gang (राज मिस्त्री)',
+    tradeLeadRole: 'Raj Mistri + Beldar Crew',
+    description: 'Dedicated team for 4.5" or 9" brick masonry, concrete lintels, beam patching and smooth cement plaster.',
+    phases: [
+      { name: 'Site Setup, Scaffolding & Mortar Mix', share: 0.20 },
+      { name: 'Level Line Brickwork & Lintel Casting', share: 0.40 },
+      { name: 'Both-Side Sand-Face Cement Plaster', share: 0.25 },
+      { name: '7-Day Water Curing & Debris Disposal', share: 0.15 },
+    ]
+  },
+  {
+    id: 'labor-carpenter',
+    category: 'labor',
+    categoryLabel: 'Direct Trade Crew & Labor Theka',
+    name: 'Master Carpenter Crew (बढ़ई ठेका)',
+    mappedId: 'renovate_kitchen',
+    baseRate: 180,
+    unit: 'sq ft ply work',
+    minArea: 100,
+    maxArea: 1500,
+    stepArea: 25,
+    defaultArea: 350,
+    durationWeeksPer1k: 6,
+    tradeLead: 'Lead Carpenter Team (बढ़ई)',
+    tradeLeadRole: 'Woodworking Crew',
+    description: 'On-site wooden frame fitting, flush doors, customized storage boxes, wall paneling & mica pressing.',
+    phases: [
+      { name: 'Chowkhat / Frame Fixing & Alignment', share: 0.25 },
+      { name: 'Plywood Box Carcass Slicing & Joinery', share: 0.35 },
+      { name: 'Fevicol Marine Mica Pressing', share: 0.20 },
+      { name: 'Locks, Hinges, Magnetic Catches & Polish', share: 0.20 },
+    ]
+  },
+  {
+    id: 'labor-plumbing',
+    category: 'labor',
+    categoryLabel: 'Direct Trade Crew & Labor Theka',
+    name: 'Sanitary & Core Plumbing (प्लंबर ठेका)',
+    mappedId: 'renovate_bath',
+    baseRate: 280,
+    unit: 'points & line ft',
+    minArea: 15,
+    maxArea: 150,
+    stepArea: 5,
+    defaultArea: 40,
+    durationWeeksPer1k: 4,
+    tradeLead: 'Licensed Master Plumber (प्लंबर)',
+    tradeLeadRole: 'Pipe Fitter Crew',
+    description: 'Concealed CPVC cold/hot supply, SWR sewage fall stacks, multi-inlet floor traps & pressure testing.',
+    phases: [
+      { name: 'Wall Chasing & Pipeline Trenching', share: 0.25 },
+      { name: 'CPVC Solvent Welding & Diverter Setup', share: 0.35 },
+      { name: 'SWR Soil Pipe Jointing with 1:40 Fall', share: 0.20 },
+      { name: '10-Bar Hydrostatic Pressure Testing', share: 0.20 },
+    ]
+  },
+  {
+    id: 'labor-electrical',
+    category: 'labor',
+    categoryLabel: 'Direct Trade Crew & Labor Theka',
+    name: 'Electrical Rewiring & DB Overhaul (बिजली मिस्त्री)',
+    mappedId: 'build_house',
+    baseRate: 38,
+    unit: 'sq ft area',
+    minArea: 300,
+    maxArea: 3000,
+    stepArea: 50,
+    defaultArea: 1000,
+    durationWeeksPer1k: 4,
+    tradeLead: 'Licensed Electrician (बिजली मिस्त्री)',
+    tradeLeadRole: 'Wireman Crew',
+    description: 'Heavy duty conduit piping, Havells/Polycab copper wiring, copper plate earthing & modular MCB distribution.',
+    phases: [
+      { name: 'Load Planning, Wall Chasing & Conduits', share: 0.25 },
+      { name: 'FR Copper Wire Pulling & Earthing Pit', share: 0.35 },
+      { name: 'Distribution Board & MCB Segregation', share: 0.20 },
+      { name: 'Modular Switch Plate Mounting & Megger Test', share: 0.20 },
+    ]
+  }
+];
+
+// Verified Local Pros Directory (USP)
+export const LOCAL_PROS = [
+  // Bareilly Pros
+  {
+    id: 'bly-1',
+    cityId: 'bareilly',
+    name: 'Suresh Mistri & Gang',
+    trade: 'mason',
+    tradeLabel: 'General Mason',
+    hindiLabel: 'राज मिस्त्री',
+    role: 'Master Civil Mason & Thekedar',
+    locality: 'Civil Lines',
+    rating: 4.9,
+    reviewsCount: 38,
+    yearsExp: 14,
+    crewSize: 6,
+    dailyRate: '₹850/day',
+    specialty: 'Brickwork, lintels, column shuttering & floor plaster',
+    housyId: 'HSY-BLY-001'
+  },
+  {
+    id: 'bly-6',
+    cityId: 'bareilly',
+    name: 'Mohan Woodworks',
+    trade: 'carpenter',
+    tradeLabel: 'Carpenter',
+    hindiLabel: 'बढ़ई / कारपेंटर',
+    role: 'Lead Modular Carpenter',
+    locality: 'Pilibhit Bypass',
+    rating: 4.7,
+    reviewsCount: 22,
+    yearsExp: 10,
+    crewSize: 4,
+    dailyRate: '₹850/day',
+    specialty: 'BWP plywood wardrobes, kitchen carcasses & door frames',
+    housyId: 'HSY-BLY-006'
+  },
+  {
+    id: 'bly-2',
+    cityId: 'bareilly',
+    name: 'Ram Pal Sharma',
+    trade: 'plumber',
+    tradeLabel: 'Plumber',
+    hindiLabel: 'प्लंबर / फ़िटर',
+    role: 'Senior Master Plumber',
+    locality: 'Subhash Nagar',
+    rating: 4.8,
+    reviewsCount: 29,
+    yearsExp: 11,
+    crewSize: 3,
+    dailyRate: '₹800/day',
+    specialty: 'CPVC concealed plumbing, diverters & soil stack slope',
+    housyId: 'HSY-BLY-002'
+  },
+  {
+    id: 'bly-3',
+    cityId: 'bareilly',
+    name: 'Rajesh Kumar & Sons',
+    trade: 'electrician',
+    tradeLabel: 'Technician / Electrician',
+    hindiLabel: 'बिजली मिस्त्री / टेक्नीशियन',
+    role: 'Licensed Electrician & Wireman',
+    locality: 'Rajendra Nagar',
+    rating: 4.7,
+    reviewsCount: 25,
+    yearsExp: 9,
+    crewSize: 3,
+    dailyRate: '₹750/day',
+    specialty: 'Wall chasing, conduit wiring, DB dressing & earthing',
+    housyId: 'HSY-BLY-003'
+  },
+  {
+    id: 'bly-5',
+    cityId: 'bareilly',
+    name: 'Anil Paint House',
+    trade: 'painter',
+    tradeLabel: 'Painter',
+    hindiLabel: 'रंगाई / पेंटर',
+    role: 'Painting Contractor',
+    locality: 'Civil Lines',
+    rating: 4.8,
+    reviewsCount: 20,
+    yearsExp: 8,
+    crewSize: 6,
+    dailyRate: '₹650/day',
+    specialty: 'Putty surface prep, Asian Paints Royale & anti-damp treatment',
+    housyId: 'HSY-BLY-005'
+  },
+  {
+    id: 'bly-7',
+    cityId: 'bareilly',
+    name: 'Er. Deepak Saxena',
+    trade: 'engineer',
+    tradeLabel: 'Civil / Structural Engineer',
+    hindiLabel: 'सिविल इंजीनियर',
+    role: 'B.Tech Civil, Chartered Engineer',
+    locality: 'Civil Lines',
+    rating: 4.9,
+    reviewsCount: 44,
+    yearsExp: 16,
+    crewSize: 1,
+    dailyRate: '₹1,500/visit',
+    specialty: 'Load-bearing wall feasibility, laser site survey & foundation checks',
+    housyId: 'HSY-BLY-007'
+  },
+
+  // Lucknow Pros
+  {
+    id: 'lko-1',
+    cityId: 'lucknow',
+    name: 'Vinod Mistri & Team',
+    trade: 'mason',
+    tradeLabel: 'General Mason',
+    hindiLabel: 'राज मिस्त्री',
+    role: 'Master Civil Mason & Thekedar',
+    locality: 'Aliganj',
+    rating: 4.8,
+    reviewsCount: 31,
+    yearsExp: 13,
+    crewSize: 6,
+    dailyRate: '₹950/day',
+    specialty: 'Foundation excavation, 9" brick masonry & slab casting',
+    housyId: 'HSY-LKO-001'
+  },
+  {
+    id: 'lko-6',
+    cityId: 'lucknow',
+    name: 'Shankar Woodworks',
+    trade: 'carpenter',
+    tradeLabel: 'Carpenter',
+    hindiLabel: 'बढ़ई / कारपेंटर',
+    role: 'Lead Modular Carpenter',
+    locality: 'Aliganj',
+    rating: 4.7,
+    reviewsCount: 24,
+    yearsExp: 11,
+    crewSize: 5,
+    dailyRate: '₹950/day',
+    specialty: 'Custom laminate kitchens, walk-in closets & flush doors',
+    housyId: 'HSY-LKO-006'
+  },
+  {
+    id: 'lko-2',
+    cityId: 'lucknow',
+    name: 'Sharma Plumbing Services',
+    trade: 'plumber',
+    tradeLabel: 'Plumber',
+    hindiLabel: 'प्लंबर / फ़िटर',
+    role: 'Certified Master Plumber',
+    locality: 'Gomti Nagar',
+    rating: 4.9,
+    reviewsCount: 35,
+    yearsExp: 12,
+    crewSize: 4,
+    dailyRate: '₹900/day',
+    specialty: 'Bathroom pipeline relocation, pressure pumps & geyser fittings',
+    housyId: 'HSY-LKO-002'
+  },
+  {
+    id: 'lko-3',
+    cityId: 'lucknow',
+    name: 'Nadeem Electricals',
+    trade: 'electrician',
+    tradeLabel: 'Technician / Electrician',
+    hindiLabel: 'बिजली मिस्त्री / टेक्नीशियन',
+    role: 'Licensed Electrician & Wireman',
+    locality: 'Indira Nagar',
+    rating: 4.8,
+    reviewsCount: 28,
+    yearsExp: 12,
+    crewSize: 4,
+    dailyRate: '₹850/day',
+    specialty: 'Full house concealed wiring, 3-phase DB & inverter setups',
+    housyId: 'HSY-LKO-003'
+  },
+  {
+    id: 'lko-5',
+    cityId: 'lucknow',
+    name: 'Rangoli Painters',
+    trade: 'painter',
+    tradeLabel: 'Painter',
+    hindiLabel: 'रंगाई / पेंटर',
+    role: 'Painting Contractor',
+    locality: 'Gomti Nagar',
+    rating: 4.7,
+    reviewsCount: 26,
+    yearsExp: 11,
+    crewSize: 8,
+    dailyRate: '₹720/day',
+    specialty: 'Interior texture painting, exterior apex weather-proof & polish',
+    housyId: 'HSY-LKO-005'
+  },
+  {
+    id: 'lko-7',
+    cityId: 'lucknow',
+    name: 'Er. Anjali Verma',
+    trade: 'engineer',
+    tradeLabel: 'Civil / Structural Engineer',
+    hindiLabel: 'सिविल इंजीनियर',
+    role: 'M.Tech Structures, Structural Auditor',
+    locality: 'Gomti Nagar',
+    rating: 4.9,
+    reviewsCount: 42,
+    yearsExp: 14,
+    crewSize: 1,
+    dailyRate: '₹1,500/visit',
+    specialty: 'Beam load calculations, crack audit & spatial reconfiguration sign-off',
+    housyId: 'HSY-LKO-007'
+  }
 ];
 
 // Quality Tiers
@@ -140,9 +633,13 @@ export default function App() {
   const [activeModal, setActiveModal] = useState(null); // 'waitlist' | 'partner' | 'consultation'
   const [toastMessage, setToastMessage] = useState('');
 
-  // Estimator State
-  const [selectedProjectId, setSelectedProjectId] = useState('kitchen');
-  const [areaSqFt, setAreaSqFt] = useState(250);
+  // Local Trades Section State
+  const [selectedTrade, setSelectedTrade] = useState('all');
+
+  // Multi-Category Estimator State
+  const [selectedCategory, setSelectedCategory] = useState('renovate');
+  const [selectedArchetypeId, setSelectedArchetypeId] = useState('renovate-kitchen');
+  const [areaSqFt, setAreaSqFt] = useState(120);
   const [selectedTierId, setSelectedTierId] = useState('standard');
 
   // Feasibility Advisor Simulator State
@@ -154,26 +651,64 @@ export default function App() {
   const [slabType, setSlabType] = useState('flat'); // 'sunken' | 'flat'
 
   const selectedCity = CITIES.find(c => c.id === selectedCityId) || CITIES[1];
-  const selectedProject = PROJECT_TYPES.find(p => p.id === selectedProjectId) || PROJECT_TYPES[1];
-  const selectedTier = TIERS.find(t => t.id === selectedTierId) || TIERS[1];
+
+  // Filter archetypes by category
+  const filteredArchetypes = useMemo(() => {
+    return EXPANDED_PROJECT_ARCHETYPES.filter((a) => a.category === selectedCategory);
+  }, [selectedCategory]);
+
+  const selectedProject = useMemo(() => {
+    return (
+      EXPANDED_PROJECT_ARCHETYPES.find((p) => p.id === selectedArchetypeId) ||
+      EXPANDED_PROJECT_ARCHETYPES[4] // fallback to kitchen
+    );
+  }, [selectedArchetypeId]);
+
+  const selectedTier = useMemo(
+    () => TIERS.find((t) => t.id === selectedTierId) || TIERS[1],
+    [selectedTierId]
+  );
+
+  // Switch category and select first archetype of that category
+  const handleCategoryChange = (cat) => {
+    setSelectedCategory(cat);
+    const firstOfCat = EXPANDED_PROJECT_ARCHETYPES.find((a) => a.category === cat);
+    if (firstOfCat) {
+      setSelectedArchetypeId(firstOfCat.id);
+      setAreaSqFt(firstOfCat.defaultArea);
+    }
+  };
+
+  const handleArchetypeChange = (arch) => {
+    setSelectedArchetypeId(arch.id);
+    setAreaSqFt(arch.defaultArea);
+  };
 
   // Price Calculations
   const calculatedEstimate = useMemo(() => {
     const rawCost = selectedProject.baseRate * areaSqFt * selectedCity.multiplier * selectedTier.multiplier;
     const minCost = Math.round((rawCost * 0.95) / 1000) * 1000;
     const maxCost = Math.round((rawCost * 1.10) / 1000) * 1000;
-    const weeks = Math.max(2, Math.round((areaSqFt / 1000) * selectedProject.durationWeeksPer1k));
+    const weeks = Math.max(1, Math.round((areaSqFt / 1000) * selectedProject.durationWeeksPer1k));
 
     return {
       minCost,
       maxCost,
       weeks,
-      phases: selectedProject.phases.map(ph => ({
+      phases: selectedProject.phases.map((ph) => ({
         ...ph,
         amount: Math.round((rawCost * ph.share) / 1000) * 1000
       }))
     };
   }, [selectedProject, areaSqFt, selectedCity, selectedTier]);
+
+  // Filter local pros by city and trade
+  const cityPros = useMemo(() => {
+    const targetCityId = (selectedCity.id === 'lucknow' || selectedCity.id === 'bareilly') ? selectedCity.id : 'lucknow';
+    const list = LOCAL_PROS.filter((p) => p.cityId === targetCityId);
+    if (selectedTrade === 'all') return list;
+    return list.filter((p) => p.trade === selectedTrade);
+  }, [selectedCity.id, selectedTrade]);
 
   // Feasibility Advisor Results
   const wallFeasibility = useMemo(() => {
@@ -238,6 +773,25 @@ export default function App() {
     setTimeout(() => setToastMessage(''), 4500);
   };
 
+  const tradeTabs = [
+    { id: 'all', label: 'All Local Trades', icon: Users },
+    { id: 'mason', label: 'Mason (राज मिस्त्री)', icon: Hammer },
+    { id: 'carpenter', label: 'Carpenter (बढ़ई)', icon: Wrench },
+    { id: 'plumber', label: 'Plumber (प्लंबर)', icon: Droplets },
+    { id: 'electrician', label: 'Electrician (बिजली मिस्त्री)', icon: Zap },
+    { id: 'painter', label: 'Painter (पेंटर)', icon: Paintbrush },
+    { id: 'engineer', label: 'Civil Engineer (इंजीनियर)', icon: ShieldCheck },
+  ];
+
+  const categoryTabs = [
+    { id: 'build', label: 'Whole Home (Build)', icon: Building2 },
+    { id: 'renovate', label: 'Rooms & Renovation', icon: Hammer },
+    { id: 'interiors', label: 'Interior Woodwork', icon: Sparkles },
+    { id: 'labor', label: 'Direct Labor Theka', icon: Wrench },
+  ];
+
+  const isLiveCity = selectedCity.status === 'LIVE';
+
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans">
       {/* Toast Notification */}
@@ -258,7 +812,7 @@ export default function App() {
         </span>
         <button
           onClick={() => setActiveModal('waitlist')}
-          className="underline ml-1 font-bold text-teal-400 hover:text-teal-300 transition-colors"
+          className="underline ml-1 font-bold text-teal-400 hover:text-teal-300 transition-colors cursor-pointer"
         >
           Join your city waitlist →
         </button>
@@ -302,14 +856,14 @@ export default function App() {
 
             <button
               onClick={() => setActiveModal('partner')}
-              className="hidden md:inline-flex text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-3.5 py-2 rounded-xl transition-all shadow-xs"
+              className="hidden md:inline-flex text-xs font-bold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-3.5 py-2 rounded-xl transition-all shadow-xs cursor-pointer"
             >
               For Contractors &amp; Designers
             </button>
 
             <button
               onClick={() => {
-                if (selectedCity.status === 'LIVE') {
+                if (isLiveCity) {
                   setActiveModal('consultation');
                 } else {
                   setActiveModal('waitlist');
@@ -318,37 +872,46 @@ export default function App() {
               style={{ backgroundColor: '#0f766e', color: '#ffffff' }}
               className="bg-teal-700 hover:bg-teal-800 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-md shadow-teal-900/20 active:scale-95 transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer"
             >
-              <span>{selectedCity.status === 'LIVE' ? 'Book Site Visit' : 'Notify My City'}</span>
+              <span>{isLiveCity ? 'Book Site Visit' : 'Notify My City'}</span>
               <ArrowRight className="w-3.5 h-3.5 text-white shrink-0" />
             </button>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* 1. Hero Section (USP Highlighted) */}
       <section className="relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24 bg-gradient-to-b from-teal-50/70 via-slate-50 to-slate-100 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-100/90 border-2 border-teal-300 text-teal-950 text-xs font-bold mb-6 shadow-xs">
               <Sparkles className="w-4 h-4 text-teal-600" />
-              <span>Urban Company for Whole Home Construction &amp; Renovations</span>
+              <span>Urban Company for Whole Projects &amp; Local Thekedar Discovery</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-950 tracking-tight leading-[1.15] mb-6">
               Build it. Renovate it. <br />
               <span className="text-teal-700">
-                Design it with photo proof.
+                Hire verified local mistris with photo proof.
               </span>
             </h1>
 
             <p className="text-lg text-slate-700 leading-relaxed mb-8">
               The single operating system for homeowners—especially remote and NRI owners living in another city.
-              Fixed guaranteed quotes, civil safety guardrails, verified local crews, and milestone payments released{' '}
+              Directly discover verified local <strong className="text-slate-950">carpenters, plumbers, electricians, and general masons</strong> with
+              fixed guaranteed quotes, civil safety guardrails, and milestone payments released{' '}
               <strong className="text-slate-950">only after you inspect verified photo proof</strong>.
             </p>
 
             {/* Hero CTAs */}
             <div className="flex flex-wrap items-center gap-4 mb-10">
+              <a
+                href="#local-crews"
+                className="bg-teal-700 hover:bg-teal-800 text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-xl shadow-teal-900/20 active:scale-95 transition-all flex items-center gap-2"
+              >
+                <span>Find Local Trades in Your Area</span>
+                <ChevronDown className="w-4 h-4" />
+              </a>
+
               <a
                 href="#estimator"
                 className="bg-slate-950 hover:bg-slate-800 text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-xl shadow-slate-950/20 active:scale-95 transition-all flex items-center gap-2"
@@ -362,12 +925,20 @@ export default function App() {
                 className="bg-white hover:bg-teal-50/60 text-slate-900 font-bold text-sm px-6 py-3.5 rounded-xl border-2 border-slate-300 hover:border-teal-600 shadow-md active:scale-95 transition-all flex items-center gap-2"
               >
                 <ShieldCheck className="w-4 h-4 text-teal-600" />
-                <span>Test Structural Safety Advisor</span>
+                <span>Structural Safety Advisor</span>
               </a>
             </div>
 
             {/* Core Trust Pillars */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t-2 border-slate-200">
+              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-teal-400 transition-all">
+                <Users className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900 uppercase">Local Trades</h4>
+                  <p className="text-[11px] text-slate-600 font-medium mt-0.5">Vetted mistris &amp; thekedars</p>
+                </div>
+              </div>
+
               <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-teal-400 transition-all">
                 <ShieldCheck className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
                 <div>
@@ -391,21 +962,13 @@ export default function App() {
                   <p className="text-[11px] text-slate-600 font-medium mt-0.5">Built for owners not on-site</p>
                 </div>
               </div>
-
-              <div className="flex items-start gap-3 bg-white p-3.5 rounded-2xl border-2 border-slate-200/90 shadow-sm hover:border-teal-400 transition-all">
-                <Wrench className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="text-xs font-bold text-slate-900 uppercase">Civil Safety</h4>
-                  <p className="text-[11px] text-slate-600 font-medium mt-0.5">Structural &amp; plumbing validation</p>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* The 5-Step Customer Loop */}
-      <section className="py-18 bg-slate-100/70 border-b-2 border-slate-200">
+      {/* 2. The 5-Step Customer Loop */}
+      <section className="py-18 bg-slate-100/70 border-b-2 border-slate-200" id="how-it-works">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-teal-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
@@ -470,38 +1033,244 @@ export default function App() {
         </div>
       </section>
 
-      {/* Interactive Estimator Section */}
+      {/* 3. Core USP: Hyperlocal Trade & Labor Discovery */}
+      <section className="py-20 bg-white border-b-2 border-slate-200" id="local-crews">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header with USP Highlight */}
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-teal-900 bg-teal-100 px-3.5 py-1 rounded-full border border-teal-300 shadow-xs">
+              Core USP: Hyperlocal Trade &amp; Labor Discovery
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-3 tracking-tight">
+              Stop Relying on Word-of-Mouth. <br />
+              <span className="text-teal-700">Find Verified Thekedars &amp; Mistris in Your Area.</span>
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 mt-3 leading-relaxed">
+              Skilled carpenters, plumbers, electricians, and general masons are active in your neighborhood right now,
+              but impossible to find online with verified records. Housy connects you directly to background-checked local trade crews
+              with transparent daily rates and escrow-protected milestone payments.
+            </p>
+          </div>
+
+          {/* The 3 Core Differentiators */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+            <div className="p-5 rounded-2xl border-2 border-slate-200 bg-slate-50/70 hover:border-teal-500 hover:bg-teal-50/30 transition shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 border border-teal-300 flex items-center justify-center text-teal-700 font-bold mb-3">
+                📍
+              </div>
+              <h3 className="text-base font-bold text-slate-950 mb-1">Hyperlocal to Your Ward</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                No calling outstation agencies. Crews are based in {selectedCity.name} localities (like Civil Lines, Gomti Nagar, Aliganj) ready for on-site visits within 24 hours.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl border-2 border-slate-200 bg-slate-50/70 hover:border-teal-500 hover:bg-teal-50/30 transition shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 border border-teal-300 flex items-center justify-center text-teal-700 font-bold mb-3">
+                🛡️
+              </div>
+              <h3 className="text-base font-bold text-slate-950 mb-1">KYC &amp; Skill Audited</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Each crew lead holds an official Housy Partner ID with Aadhaar KYC verification, verified reference calls, and past site photo inspections.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl border-2 border-slate-200 bg-slate-50/70 hover:border-teal-500 hover:bg-teal-50/30 transition shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 border border-teal-300 flex items-center justify-center text-teal-700 font-bold mb-3">
+                💳
+              </div>
+              <h3 className="text-base font-bold text-slate-950 mb-1">Zero Cash Advance Trap</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Never lose your money to unverified contractors who vanish mid-job. Payments stay safely in milestone escrow until you inspect verified photo proof.
+              </p>
+            </div>
+          </div>
+
+          {/* Trade Filter Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+            {tradeTabs.map((tab) => {
+              const isSelected = selectedTrade === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setSelectedTrade(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border-2 cursor-pointer ${
+                    isSelected
+                      ? 'bg-teal-700 text-white border-teal-700 shadow-md shadow-teal-900/10'
+                      : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+                  }`}
+                >
+                  <tab.icon className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-teal-600'}`} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Verified Pros Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {cityPros.map((pro) => (
+              <div
+                key={pro.id}
+                className="rounded-2xl border-2 border-slate-200 bg-white p-5 flex flex-col justify-between hover:border-teal-500 hover:shadow-xl transition-all shadow-sm group"
+              >
+                <div>
+                  {/* Header & Badges */}
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div>
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-200">
+                        {pro.housyId}
+                      </span>
+                      <h4 className="text-base font-extrabold text-slate-950 mt-1.5 group-hover:text-teal-700 transition">
+                        {pro.name}
+                      </h4>
+                      <p className="text-xs font-semibold text-slate-500">{pro.role}</p>
+                    </div>
+                    <div className="flex items-center gap-1 bg-amber-50 border border-amber-200 px-2 py-1 rounded-lg shrink-0">
+                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                      <span className="text-xs font-bold text-amber-900">{pro.rating}</span>
+                      <span className="text-[10px] text-amber-700 font-medium">({pro.reviewsCount})</span>
+                    </div>
+                  </div>
+
+                  {/* Location & Experience Meta */}
+                  <div className="grid grid-cols-2 gap-2 py-2.5 my-3 border-y border-slate-100 text-[11px] text-slate-600 font-medium">
+                    <div className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                      <span className="truncate">{pro.locality}, {isLiveCity ? selectedCity.name : 'Active Sector'}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                      <span>{pro.yearsExp} Yrs in Trade</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Users className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                      <span>Crew of {pro.crewSize} Workers</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span className="text-emerald-700 font-bold">KYC Verified</span>
+                    </div>
+                  </div>
+
+                  {/* Specialty Description */}
+                  <p className="text-xs text-slate-600 font-normal leading-relaxed mb-4">
+                    <strong className="text-slate-800 font-semibold">Specialization:</strong> {pro.specialty}
+                  </p>
+                </div>
+
+                {/* Card Footer: Transparent Rate & Direct Booking */}
+                <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] uppercase font-mono text-slate-400 block font-semibold">Standard Rate</span>
+                    <span className="text-sm font-extrabold text-slate-900 font-mono">{pro.dailyRate}</span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      if (isLiveCity) {
+                        setActiveModal('consultation');
+                      } else {
+                        setActiveModal('waitlist');
+                      }
+                    }}
+                    className="bg-slate-950 hover:bg-teal-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>{isLiveCity ? 'Book Site Visit' : 'Join Waitlist'}</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Trust Banner at Bottom */}
+          <div className="mt-12 bg-slate-50 rounded-2xl border-2 border-slate-200 p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 border border-teal-300 flex items-center justify-center text-teal-700 font-bold text-lg">
+                🛡️
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-slate-950">
+                  Are you a skilled contractor, carpenter, or mason?
+                </h4>
+                <p className="text-xs text-slate-600">
+                  Join Housy to receive pre-funded projects with guaranteed weekly milestone payouts.
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setActiveModal('partner')}
+              className="bg-teal-700 hover:bg-teal-800 text-white font-bold text-xs px-5 py-3 rounded-xl shadow-md transition-all whitespace-nowrap shrink-0 flex items-center gap-2 cursor-pointer"
+            >
+              <span>Register as Housy Crew Partner</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Expanded Multi-Category Project & Labor Cost Estimator */}
       <section id="estimator" className="py-20 bg-slate-200/60 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-teal-900 bg-teal-100 px-3 py-1 rounded-full border border-teal-300">
-              Interactive Tool 01
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-teal-900 bg-teal-100 px-3.5 py-1 rounded-full border border-teal-300 shadow-xs">
+              Interactive Cost &amp; Labor Estimator
             </span>
-            <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
-              Phase-Wise Project Cost Estimator
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 mt-3 tracking-tight">
+              Phase-Wise Project &amp; Labor Cost Estimator
             </h2>
             <p className="text-sm text-slate-600 mt-2">
-              Calibrated with real-time labor and material rates across 20 Indian cities.
+              Whether building a complete house, remodeling a single room, or hiring dedicated trade mistris—get instant transparent pricing.
             </p>
+          </div>
+
+          {/* 4 Category Switcher Tabs */}
+          <div className="flex items-center justify-center gap-2 sm:gap-3 overflow-x-auto pb-4 mb-8 no-scrollbar">
+            {categoryTabs.map((cat) => {
+              const isSelected = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => handleCategoryChange(cat.id)}
+                  className={`flex items-center gap-2 px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all border-2 cursor-pointer shadow-xs ${
+                    isSelected
+                      ? 'bg-slate-950 text-white border-slate-950 shadow-md ring-2 ring-teal-500/20'
+                      : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300'
+                  }`}
+                >
+                  <cat.icon className={`w-4 h-4 ${isSelected ? 'text-teal-400' : 'text-slate-600'}`} />
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           <div className="bg-white rounded-3xl border-2 border-slate-300 shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
             {/* Left Controls */}
             <div className="lg:col-span-7 p-6 sm:p-10 bg-slate-50/70 border-b lg:border-b-0 lg:border-r-2 border-slate-200 space-y-8">
-              {/* Project Type */}
+              {/* 1. Project Archetype */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-3">
-                  1. Select Project Archetype
-                </label>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
+                    1. Select Specific Project Archetype ({filteredArchetypes.length} Available)
+                  </label>
+                  <span className="text-[11px] font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                    {selectedProject.categoryLabel}
+                  </span>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {PROJECT_TYPES.map((p) => {
-                    const isSelected = selectedProjectId === p.id;
+                  {filteredArchetypes.map((p) => {
+                    const isSelected = selectedArchetypeId === p.id;
                     return (
                       <button
                         key={p.id}
                         type="button"
-                        onClick={() => setSelectedProjectId(p.id)}
-                        className={`text-left p-4 rounded-xl border-2 text-xs transition-all ${
+                        onClick={() => handleArchetypeChange(p)}
+                        className={`text-left p-4 rounded-xl border-2 text-xs transition-all cursor-pointer ${
                           isSelected
                             ? 'border-teal-600 bg-teal-50 text-teal-950 font-bold shadow-md ring-2 ring-teal-500/20'
                             : 'border-slate-300 bg-white hover:border-teal-500 hover:bg-slate-50 text-slate-800 font-medium shadow-xs'
@@ -513,16 +1282,27 @@ export default function App() {
                           </span>
                           {isSelected && <CheckCircle2 className="w-4 h-4 text-teal-600 shrink-0" />}
                         </div>
-                        <div className="text-slate-600 text-[11px] line-clamp-1 font-normal">
+                        <div className="text-slate-600 text-[11px] line-clamp-2 font-normal leading-relaxed mt-1">
                           {p.description}
                         </div>
                       </button>
                     );
                   })}
                 </div>
+
+                {/* Custom Scope / 100+ Other Tasks Note */}
+                <div className="mt-3.5 bg-white p-3.5 rounded-xl border border-dashed border-teal-400/80 flex items-start gap-2.5 text-xs text-slate-700">
+                  <HelpCircle className="w-4 h-4 text-teal-600 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-slate-900">Have a custom repair, shop makeover, or specialized theka? </span>
+                    <span className="text-slate-600">
+                      Housy configures over 100+ specialized tasks. Book a ₹499 site visit and our civil engineers generate your exact itemized Bill of Quantities (BOQ).
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              {/* Area Slider */}
+              {/* 2. Area Slider */}
               <div className="bg-white p-5 rounded-2xl border-2 border-slate-200 shadow-xs">
                 <div className="flex items-center justify-between mb-3">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
@@ -534,21 +1314,21 @@ export default function App() {
                 </div>
                 <input
                   type="range"
-                  min="100"
-                  max="3500"
-                  step="50"
+                  min={selectedProject.minArea}
+                  max={selectedProject.maxArea}
+                  step={selectedProject.stepArea}
                   value={areaSqFt}
                   onChange={(e) => setAreaSqFt(Number(e.target.value))}
                   className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600"
                 />
                 <div className="flex justify-between text-xs text-slate-600 mt-2 font-mono font-semibold">
-                  <span>100 sq ft</span>
-                  <span>1,500 sq ft</span>
-                  <span>3,500 sq ft</span>
+                  <span>{selectedProject.minArea.toLocaleString()} {selectedProject.unit}</span>
+                  <span>{Math.round((selectedProject.minArea + selectedProject.maxArea) / 2).toLocaleString()} {selectedProject.unit}</span>
+                  <span>{selectedProject.maxArea.toLocaleString()} {selectedProject.unit}</span>
                 </div>
               </div>
 
-              {/* Quality Tier */}
+              {/* 3. Quality Tier */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-3">
                   3. Select Material &amp; Finish Tier
@@ -561,7 +1341,7 @@ export default function App() {
                         key={tier.id}
                         type="button"
                         onClick={() => setSelectedTierId(tier.id)}
-                        className={`p-4 rounded-xl border-2 text-left transition-all ${
+                        className={`p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                           isSelected
                             ? 'border-teal-600 bg-teal-50 text-teal-950 font-bold shadow-md ring-2 ring-teal-500/20'
                             : 'border-slate-300 bg-white hover:border-teal-500 hover:bg-slate-50 text-slate-800 font-medium shadow-xs'
@@ -599,9 +1379,9 @@ export default function App() {
                     </div>
                   </div>
                   <span className={`text-[11px] font-mono px-2.5 py-0.5 rounded font-bold ${
-                    selectedCity.status === 'LIVE' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
+                    isLiveCity ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
                   }`}>
-                    {selectedCity.status === 'LIVE' ? 'ACTIVE CREWS' : 'WAITLIST'}
+                    {isLiveCity ? 'ACTIVE CREWS' : 'WAITLIST'}
                   </span>
                 </div>
 
@@ -612,14 +1392,26 @@ export default function App() {
                   </div>
                   <div className="text-xs text-slate-400 mt-1 flex items-center gap-2">
                     <Clock className="w-3.5 h-3.5 text-teal-400" />
-                    <span>Estimated Duration: <strong>~{calculatedEstimate.weeks} weeks</strong></span>
+                    <span>Estimated Execution: <strong>~{calculatedEstimate.weeks} {calculatedEstimate.weeks === 1 ? 'week' : 'weeks'}</strong></span>
+                  </div>
+                </div>
+
+                {/* Assigned Trade Crew Preview */}
+                <div className="bg-slate-800/80 rounded-xl p-3.5 border border-slate-700/80 mb-6 flex items-start gap-3">
+                  <UserCheck className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-teal-300">
+                      Lead Trade Crew Assigned
+                    </span>
+                    <h5 className="text-xs font-bold text-white mt-0.5">{selectedProject.tradeLead}</h5>
+                    <p className="text-[11px] text-slate-400">{selectedProject.tradeLeadRole} · Escrow KYC Verified</p>
                   </div>
                 </div>
 
                 {/* Milestone Breakdown */}
                 <div className="space-y-3 mb-8">
                   <span className="text-xs uppercase tracking-wider text-slate-400 font-mono block">
-                    Escrow Phase Breakdown
+                    Escrow Milestone Payout Schedule
                   </span>
                   {calculatedEstimate.phases.map((ph, idx) => (
                     <div key={idx} className="bg-slate-800/90 rounded-xl p-3.5 border border-slate-700/80 flex items-center justify-between text-xs">
@@ -640,7 +1432,7 @@ export default function App() {
               <div className="pt-4 border-t border-slate-800">
                 <button
                   onClick={() => {
-                    if (selectedCity.status === 'LIVE') {
+                    if (isLiveCity) {
                       setActiveModal('consultation');
                     } else {
                       setActiveModal('waitlist');
@@ -649,11 +1441,11 @@ export default function App() {
                   style={{ backgroundColor: '#14b8a6', color: '#020617' }}
                   className="w-full bg-teal-500 hover:bg-teal-400 text-slate-950 font-extrabold text-sm py-4 px-6 rounded-xl shadow-lg shadow-teal-500/25 active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>{selectedCity.status === 'LIVE' ? 'Lock Quote via Paid Site Visit (₹499)' : `Join ${selectedCity.name} Waitlist`}</span>
+                  <span>{isLiveCity ? 'Lock Quote via Paid Site Visit (₹499)' : `Join ${selectedCity.name} Waitlist`}</span>
                   <ArrowRight className="w-4 h-4 text-slate-950" />
                 </button>
                 <p className="text-[11px] text-slate-400 text-center mt-2.5">
-                  {selectedCity.status === 'LIVE'
+                  {isLiveCity
                     ? '100% refundable if verified specialist does not arrive within agreed slot.'
                     : 'We notify you the day crew vetting completes in your neighborhood.'}
                 </p>
@@ -663,7 +1455,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Safety Advisor Simulator Section */}
+      {/* 5. Safety Advisor Simulator Section */}
       <section id="safety-advisor" className="py-20 bg-slate-50 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -709,7 +1501,7 @@ export default function App() {
                             key={t.id}
                             type="button"
                             onClick={() => setWallType(t.id)}
-                            className={`p-3 rounded-xl border-2 text-xs font-bold text-left transition-all ${
+                            className={`p-3 rounded-xl border-2 text-xs font-bold text-left transition-all cursor-pointer ${
                               isSelected
                                 ? 'border-teal-600 bg-teal-50 text-teal-950 shadow-md ring-2 ring-teal-500/20'
                                 : 'border-slate-300 bg-slate-50 hover:border-teal-500 hover:bg-white text-slate-800 shadow-xs'
@@ -730,7 +1522,7 @@ export default function App() {
                       <select
                         value={floorPosition}
                         onChange={(e) => setFloorPosition(e.target.value)}
-                        className="w-full bg-slate-50 hover:bg-white border-2 border-slate-300 focus:bg-white focus:border-teal-600 text-xs font-bold rounded-xl p-3 text-slate-900 shadow-xs"
+                        className="w-full bg-slate-50 hover:bg-white border-2 border-slate-300 focus:bg-white focus:border-teal-600 text-xs font-bold rounded-xl p-3 text-slate-900 shadow-xs cursor-pointer"
                       >
                         <option value="ground">Ground Floor</option>
                         <option value="upper">Intermediate Floor</option>
@@ -745,10 +1537,10 @@ export default function App() {
                       <select
                         value={wallThickness}
                         onChange={(e) => setWallThickness(e.target.value)}
-                        className="w-full bg-slate-50 hover:bg-white border-2 border-slate-300 focus:bg-white focus:border-teal-600 text-xs font-bold rounded-xl p-3 text-slate-900 shadow-xs"
+                        className="w-full bg-slate-50 hover:bg-white border-2 border-slate-300 focus:bg-white focus:border-teal-600 text-xs font-bold rounded-xl p-3 text-slate-900 shadow-xs cursor-pointer"
                       >
                         <option value="4.5-inch">4.5 inch (Partition)</option>
-                        <option value="9-inch">9 inch (Structural/Outer)</option>
+                        <option value="9-inch">9 inch (Load-Bearing)</option>
                       </select>
                     </div>
                   </div>
@@ -756,12 +1548,14 @@ export default function App() {
               </div>
 
               {/* Dynamic Advisory Output */}
-              <div className={`p-4 rounded-xl ${wallFeasibility.bg} transition-all shadow-sm`}>
-                <div className="flex items-center gap-2 mb-2 font-bold text-xs uppercase tracking-wider">
-                  <wallFeasibility.icon className="w-4 h-4 shrink-0" />
-                  <span>{wallFeasibility.badge}</span>
+              <div className={`p-4 rounded-xl flex items-start gap-3 mt-2 ${wallFeasibility.bg}`}>
+                <wallFeasibility.icon className="w-5 h-5 shrink-0 mt-0.5" />
+                <div>
+                  <span className="text-xs font-black uppercase tracking-wider block font-mono">
+                    {wallFeasibility.badge}
+                  </span>
+                  <p className="text-xs mt-1 leading-relaxed font-medium">{wallFeasibility.advice}</p>
                 </div>
-                <p className="text-xs leading-relaxed font-medium">{wallFeasibility.advice}</p>
               </div>
             </div>
 
@@ -770,48 +1564,23 @@ export default function App() {
               <div>
                 <div className="flex items-center gap-2.5 mb-5 pb-3 border-b border-slate-200">
                   <div className="w-9 h-9 rounded-xl bg-teal-100 flex items-center justify-center text-teal-700">
-                    <Wrench className="w-5 h-5" />
+                    <Droplets className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-950 text-base">Bathroom Drainage Slope Check</h3>
-                    <p className="text-xs text-slate-500 font-medium">Checking for 1:40 minimum gravity gradient</p>
+                    <h3 className="font-bold text-slate-950 text-base">Bathroom Drainage Fall Feasibility</h3>
+                    <p className="text-xs text-slate-500 font-medium">Preventing water stagnation &amp; back-flow</p>
                   </div>
                 </div>
 
                 <div className="space-y-5 mb-6">
                   <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
-                        Distance from Main Soil Stack
-                      </label>
-                      <span className="text-xs font-mono font-bold text-teal-900 bg-teal-100 px-3 py-1 rounded-lg border-2 border-teal-300 shadow-xs">
-                        {drainDistance} Feet
-                      </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="3"
-                      max="20"
-                      step="1"
-                      value={drainDistance}
-                      onChange={(e) => setDrainDistance(Number(e.target.value))}
-                      className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600"
-                    />
-                    <div className="flex justify-between text-xs text-slate-600 mt-2 font-mono font-semibold">
-                      <span>3 ft (Adjacent)</span>
-                      <span>10 ft</span>
-                      <span>20 ft (Opposite side)</span>
-                    </div>
-                  </div>
-
-                  <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 mb-2">
-                      Floor Slab Construction
+                      Slab Construction
                     </label>
                     <div className="grid grid-cols-2 gap-2.5">
                       {[
-                        { id: 'sunken', label: 'Sunken Slab (Recessed)' },
-                        { id: 'flat', label: 'Flat Conventional Slab' }
+                        { id: 'sunken', label: 'Sunken Slab (Ideal)' },
+                        { id: 'flat', label: 'Flat Concrete Slab' }
                       ].map(s => {
                         const isSelected = slabType === s.id;
                         return (
@@ -819,7 +1588,7 @@ export default function App() {
                             key={s.id}
                             type="button"
                             onClick={() => setSlabType(s.id)}
-                            className={`p-3 rounded-xl border-2 text-xs font-bold text-left transition-all ${
+                            className={`p-3 rounded-xl border-2 text-xs font-bold text-left transition-all cursor-pointer ${
                               isSelected
                                 ? 'border-teal-600 bg-teal-50 text-teal-950 shadow-md ring-2 ring-teal-500/20'
                                 : 'border-slate-300 bg-slate-50 hover:border-teal-500 hover:bg-white text-slate-800 shadow-xs'
@@ -831,23 +1600,49 @@ export default function App() {
                       })}
                     </div>
                   </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-bold uppercase tracking-wider text-slate-800">
+                        Distance to Main Waste Stack
+                      </label>
+                      <span className="text-xs font-bold font-mono text-teal-900 bg-teal-100 px-2.5 py-0.5 rounded border border-teal-300">
+                        {drainDistance} feet
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="2"
+                      max="18"
+                      value={drainDistance}
+                      onChange={(e) => setDrainDistance(Number(e.target.value))}
+                      className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600"
+                    />
+                    <div className="flex justify-between text-xs text-slate-600 mt-1.5 font-mono font-semibold">
+                      <span>2 ft (Close)</span>
+                      <span>10 ft</span>
+                      <span>18 ft (High risk)</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Dynamic Advisory Output */}
-              <div className={`p-4 rounded-xl ${drainFeasibility.bg} transition-all shadow-sm`}>
-                <div className="flex items-center gap-2 mb-2 font-bold text-xs uppercase tracking-wider">
-                  <drainFeasibility.icon className="w-4 h-4 shrink-0" />
-                  <span>{drainFeasibility.badge}</span>
+              <div className={`p-4 rounded-xl flex items-start gap-3 mt-2 ${drainFeasibility.bg}`}>
+                <drainFeasibility.icon className="w-5 h-5 shrink-0 mt-0.5" />
+                <div>
+                  <span className="text-xs font-black uppercase tracking-wider block font-mono">
+                    {drainFeasibility.badge}
+                  </span>
+                  <p className="text-xs mt-1 leading-relaxed font-medium">{drainFeasibility.advice}</p>
                 </div>
-                <p className="text-xs leading-relaxed font-medium">{drainFeasibility.advice}</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Comparison Table */}
+      {/* 6. Comparison Table */}
       <section className="py-20 bg-slate-100/70 border-b-2 border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -909,7 +1704,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contractor & Designer Network */}
+      {/* 7. Contractor & Designer Partner Network */}
       <section className="py-16 bg-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-r from-teal-950 via-slate-800 to-slate-900 rounded-3xl p-8 sm:p-12 border-2 border-slate-700 flex flex-col md:flex-row items-center justify-between gap-8">
@@ -948,7 +1743,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* 8. Footer */}
       <footer className="bg-white border-t-2 border-slate-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -1012,7 +1807,7 @@ export default function App() {
           <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-2 border-slate-200 relative animate-fade-in">
             <button
               onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1065,12 +1860,12 @@ export default function App() {
 
               <div>
                 <label className="block text-xs font-bold text-slate-800 mb-1.5">Planned Project Type</label>
-                <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs">
+                <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs cursor-pointer">
                   <option>Full House Construction</option>
                   <option>Modular Kitchen Renovation</option>
                   <option>Bathroom Remodel &amp; Waterproofing</option>
                   <option>Interior Architecture</option>
-                  <option>Structural Wall Modification</option>
+                  <option>Direct Labor Mistri Theka</option>
                 </select>
               </div>
 
@@ -1092,7 +1887,7 @@ export default function App() {
           <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-2 border-slate-200 relative animate-fade-in">
             <button
               onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1175,7 +1970,7 @@ export default function App() {
           <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-2 border-slate-200 relative animate-fade-in">
             <button
               onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -1212,7 +2007,7 @@ export default function App() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-bold text-slate-800 mb-1.5">Primary Trade</label>
-                  <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs">
+                  <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs cursor-pointer">
                     <option>General Contractor</option>
                     <option>Masonry / Civil</option>
                     <option>Interior Designer</option>
@@ -1222,7 +2017,7 @@ export default function App() {
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-800 mb-1.5">City of Operation</label>
-                  <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs">
+                  <select className="w-full text-xs font-bold p-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 hover:bg-white focus:bg-white focus:border-teal-600 text-slate-900 shadow-xs cursor-pointer">
                     {CITIES.map(c => (
                       <option key={c.id} value={c.name}>{c.name}</option>
                     ))}
