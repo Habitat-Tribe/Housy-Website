@@ -933,7 +933,7 @@ export default function App() {
 
             <div className="flex flex-wrap items-center gap-6 text-xs text-slate-600 font-medium">
               <a
-                href="https://github.com/1997agarwal/Housy"
+                href="https://github.com/Habitat-Tribe/Housy"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-slate-900 flex items-center gap-1"
@@ -942,7 +942,7 @@ export default function App() {
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
               <a
-                href="https://github.com/1997agarwal/Housy/blob/main/docs/SPEC.md"
+                href="https://github.com/Habitat-Tribe/Housy/blob/main/docs/SPEC.md"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-slate-900"
@@ -950,7 +950,7 @@ export default function App() {
                 Architecture Spec
               </a>
               <a
-                href="https://github.com/1997agarwal/Housy/blob/main/ROADMAP.md"
+                href="https://github.com/Habitat-Tribe/Housy/blob/main/ROADMAP.md"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-slate-900"
