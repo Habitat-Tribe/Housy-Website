@@ -1,0 +1,1238 @@
+import React, { useState, useMemo } from 'react';
+import {
+  Home,
+  CheckCircle2,
+  AlertTriangle,
+  XCircle,
+  ShieldCheck,
+  Camera,
+  Layers,
+  ArrowRight,
+  MapPin,
+  Clock,
+  Sparkles,
+  Wrench,
+  Users,
+  Compass,
+  FileText,
+  BadgeCheck,
+  Building2,
+  Hammer,
+  HelpCircle,
+  X,
+  ChevronDown,
+  ExternalLink
+} from 'lucide-react';
+
+// 20 Configured Indian Cities
+const CITIES = [
+  { id: 'bareilly', name: 'Bareilly', state: 'Uttar Pradesh', status: 'LIVE', multiplier: 0.95 },
+  { id: 'lucknow', name: 'Lucknow', state: 'Uttar Pradesh', status: 'LIVE', multiplier: 1.05 },
+  { id: 'kanpur', name: 'Kanpur', state: 'Uttar Pradesh', status: 'WAITLIST', multiplier: 0.98 },
+  { id: 'varanasi', name: 'Varanasi', state: 'Uttar Pradesh', status: 'WAITLIST', multiplier: 0.96 },
+  { id: 'agra', name: 'Agra', state: 'Uttar Pradesh', status: 'WAITLIST', multiplier: 0.95 },
+  { id: 'meerut', name: 'Meerut', state: 'Uttar Pradesh', status: 'WAITLIST', multiplier: 0.98 },
+  { id: 'delhi-ncr', name: 'Delhi NCR', state: 'National Capital Region', status: 'WAITLIST', multiplier: 1.25 },
+  { id: 'jaipur', name: 'Jaipur', state: 'Rajasthan', status: 'WAITLIST', multiplier: 1.02 },
+  { id: 'bengaluru', name: 'Bengaluru', state: 'Karnataka', status: 'WAITLIST', multiplier: 1.25 },
+  { id: 'mumbai', name: 'Mumbai', state: 'Maharashtra', status: 'WAITLIST', multiplier: 1.35 },
+  { id: 'pune', name: 'Pune', state: 'Maharashtra', status: 'WAITLIST', multiplier: 1.15 },
+  { id: 'hyderabad', name: 'Hyderabad', state: 'Telangana', status: 'WAITLIST', multiplier: 1.18 },
+  { id: 'chennai', name: 'Chennai', state: 'Tamil Nadu', status: 'WAITLIST', multiplier: 1.18 },
+  { id: 'kolkata', name: 'Kolkata', state: 'West Bengal', status: 'WAITLIST', multiplier: 1.08 },
+  { id: 'ahmedabad', name: 'Ahmedabad', state: 'Gujarat', status: 'WAITLIST', multiplier: 1.05 },
+  { id: 'chandigarh', name: 'Chandigarh', state: 'Punjab/Haryana', status: 'WAITLIST', multiplier: 1.12 },
+  { id: 'dehradun', name: 'Dehradun', state: 'Uttarakhand', status: 'WAITLIST', multiplier: 1.02 },
+  { id: 'indore', name: 'Indore', state: 'Madhya Pradesh', status: 'WAITLIST', multiplier: 1.00 },
+  { id: 'bhopal', name: 'Bhopal', state: 'Madhya Pradesh', status: 'WAITLIST', multiplier: 0.98 },
+  { id: 'patna', name: 'Patna', state: 'Bihar', status: 'WAITLIST', multiplier: 0.98 },
+];
+
+// Project Types Catalog
+const PROJECT_TYPES = [
+  {
+    id: 'build',
+    name: 'Full House Construction',
+    category: 'Build',
+    baseRate: 1850,
+    unit: 'sq ft built-up',
+    durationWeeksPer1k: 24,
+    description: 'RCC structure, brickwork, plastering, electrical, plumbing, flooring & turnkey finishes.',
+    phases: [
+      { name: 'Excavation & Foundation', share: 0.20 },
+      { name: 'RCC Frame & Slab Casting', share: 0.30 },
+      { name: 'Brickwork & Conduit Plastering', share: 0.25 },
+      { name: 'Flooring, Sanitary & Turnkey Paint', share: 0.25 },
+    ]
+  },
+  {
+    id: 'kitchen',
+    name: 'Modular Kitchen Renovation',
+    category: 'Renovate',
+    baseRate: 1450,
+    unit: 'sq ft carpet',
+    durationWeeksPer1k: 4,
+    description: 'BWP plywood carcasses, acrylic/laminate shutters, quartz counter, chimney & plumbing.',
+    phases: [
+      { name: 'Demolition & Wall Prep', share: 0.15 },
+      { name: 'Underground Plumbing & Wiring', share: 0.25 },
+      { name: 'Granite/Quartz Countertop & Tiles', share: 0.25 },
+      { name: 'Cabinetry & Appliance Fit-off', share: 0.35 },
+    ]
+  },
+  {
+    id: 'bathroom',
+    name: 'Bathroom Remodel & Waterproofing',
+    category: 'Renovate',
+    baseRate: 1650,
+    unit: 'sq ft',
+    durationWeeksPer1k: 3,
+    description: 'Complete strip-down, 3-layer elastomeric waterproofing, concealed plumbing & vanity.',
+    phases: [
+      { name: 'Tile Stripping & Debris Removal', share: 0.15 },
+      { name: 'Core Concealed CPVC Plumbing', share: 0.30 },
+      { name: '3-Layer Membrane Waterproofing', share: 0.25 },
+      { name: 'Vitrified Wall Tiling & Diverters', share: 0.30 },
+    ]
+  },
+  {
+    id: 'interiors',
+    name: 'Complete Home Interior Architecture',
+    category: 'Interiors',
+    baseRate: 1350,
+    unit: 'sq ft carpet',
+    durationWeeksPer1k: 8,
+    description: 'Designer false ceiling, modular wardrobes, TV consoles, ambient lighting & royale paint.',
+    phases: [
+      { name: '3D CAD Moodboard & Layout Sign-off', share: 0.15 },
+      { name: 'Gypsum Ceiling & Ambient Wiring', share: 0.25 },
+      { name: 'Factory Modular Wardrobes & Units', share: 0.35 },
+      { name: 'Premium Texture Paint & Fixtures', share: 0.25 },
+    ]
+  },
+  {
+    id: 'structural',
+    name: 'Wall Removal & Spatial Reconfiguration',
+    category: 'Renovate',
+    baseRate: 750,
+    unit: 'sq ft affected',
+    durationWeeksPer1k: 2,
+    description: 'Non-structural partition removal, RSJ steel beam installation, lintel support & plaster.',
+    phases: [
+      { name: 'Structural Safety Assessment', share: 0.20 },
+      { name: 'Temporary Acrow Prop Shoring', share: 0.25 },
+      { name: 'Controlled Diamond Blade Cutting', share: 0.30 },
+      { name: 'Beam Encapsulation & Surface Finish', share: 0.25 },
+    ]
+  },
+];
+
+// Quality Tiers
+const TIERS = [
+  { id: 'budget', name: 'Budget Essential', multiplier: 1.0, badge: 'Standard Value', note: 'Standard commercial plywood, ISI conduits, standard ceramic tiles' },
+  { id: 'standard', name: 'Balanced Quality', multiplier: 1.25, badge: 'Most Popular', note: 'BWP 710 marine ply, Jaquar fittings, Asian Paints Royale, Vitrified 4x2' },
+  { id: 'luxury', name: 'Designer Premium', multiplier: 1.65, badge: 'High End', note: 'HDHMR/PU finishes, Grohe/Kohler sanitary, Italian marble / GVT slabs' },
+];
+
+export default function App() {
+  // Navigation & Modal State
+  const [selectedCityId, setSelectedCityId] = useState('lucknow');
+  const [activeModal, setActiveModal] = useState(null); // 'waitlist' | 'partner' | 'consultation'
+  const [toastMessage, setToastMessage] = useState('');
+
+  // Estimator State
+  const [selectedProjectId, setSelectedProjectId] = useState('kitchen');
+  const [areaSqFt, setAreaSqFt] = useState(250);
+  const [selectedTierId, setSelectedTierId] = useState('standard');
+
+  // Feasibility Advisor Simulator State
+  const [wallType, setWallType] = useState('brick-loadbearing'); // 'rcc-frame' | 'brick-loadbearing'
+  const [floorPosition, setFloorPosition] = useState('ground'); // 'ground' | 'upper' | 'top'
+  const [wallThickness, setWallThickness] = useState('9-inch'); // '4.5-inch' | '9-inch'
+
+  const [drainDistance, setDrainDistance] = useState(8); // ft
+  const [slabType, setSlabType] = useState('flat'); // 'sunken' | 'flat'
+
+  const selectedCity = CITIES.find(c => c.id === selectedCityId) || CITIES[1];
+  const selectedProject = PROJECT_TYPES.find(p => p.id === selectedProjectId) || PROJECT_TYPES[1];
+  const selectedTier = TIERS.find(t => t.id === selectedTierId) || TIERS[1];
+
+  // Price Calculations
+  const calculatedEstimate = useMemo(() => {
+    const rawCost = selectedProject.baseRate * areaSqFt * selectedCity.multiplier * selectedTier.multiplier;
+    const minCost = Math.round((rawCost * 0.95) / 1000) * 1000;
+    const maxCost = Math.round((rawCost * 1.10) / 1000) * 1000;
+    const weeks = Math.max(2, Math.round((areaSqFt / 1000) * selectedProject.durationWeeksPer1k));
+
+    return {
+      minCost,
+      maxCost,
+      weeks,
+      phases: selectedProject.phases.map(ph => ({
+        ...ph,
+        amount: Math.round((rawCost * ph.share) / 1000) * 1000
+      }))
+    };
+  }, [selectedProject, areaSqFt, selectedCity, selectedTier]);
+
+  // Feasibility Advisor Results
+  const wallFeasibility = useMemo(() => {
+    if (wallType === 'brick-loadbearing' && (floorPosition === 'ground' || wallThickness === '9-inch')) {
+      return {
+        level: 'RED',
+        badge: 'Critical Structural Hazard',
+        bg: 'bg-rose-50 border-rose-200 text-rose-800',
+        icon: XCircle,
+        advice: 'Cannot demolish! This 9" masonry wall bears multi-story slab load. Demolition will trigger catastrophic ceiling sag or structural cracks. Requires certified structural engineer approval and heavy structural steel I-beam retrofitting.'
+      };
+    }
+    if (wallType === 'brick-loadbearing' && floorPosition === 'top' && wallThickness === '4.5-inch') {
+      return {
+        level: 'AMBER',
+        badge: 'Engineer Inspection Mandatory',
+        bg: 'bg-amber-50 border-amber-200 text-amber-800',
+        icon: AlertTriangle,
+        advice: 'Top floor 4.5" partition wall. Likely non-structural, but must be checked for roof water-tank load transfer. Acrow-prop temporary shoring required during diamond-wheel cutting.'
+      };
+    }
+    return {
+      level: 'GREEN',
+      badge: 'Safe Architectural Alteration',
+      bg: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+      icon: CheckCircle2,
+      advice: 'RCC Column-Beam Frame detected with 4.5" non-load-bearing curtain brickwork. Wall can be cleanly removed to create an open-concept living/kitchen space without compromising building integrity.'
+    };
+  }, [wallType, floorPosition, wallThickness]);
+
+  const drainFeasibility = useMemo(() => {
+    const minSlopeInches = (drainDistance * 12) / 40; // 1:40 rule
+    if (slabType === 'flat' && drainDistance > 10) {
+      return {
+        level: 'RED',
+        badge: 'High Sewage Stagnation Risk',
+        bg: 'bg-rose-50 border-rose-200 text-rose-800',
+        icon: XCircle,
+        advice: `A ${drainDistance} ft drain run requires at least ${minSlopeInches.toFixed(1)}" vertical fall. On a flat concrete slab, this requires dangerous core cutting through RCC beams or an awkward 6" bathroom step-up. High risk of chronic drain clogs.`
+      };
+    }
+    if (slabType === 'flat' && drainDistance > 5) {
+      return {
+        level: 'AMBER',
+        badge: 'Raised Floor Required',
+        bg: 'bg-amber-50 border-amber-200 text-amber-800',
+        icon: AlertTriangle,
+        advice: `Drain run of ${drainDistance} ft requires ${minSlopeInches.toFixed(1)}" gradient. Feasible on flat slab only by casting a 3-4" lightweight concrete podium to preserve natural gravity water flow.`
+      };
+    }
+    return {
+      level: 'GREEN',
+      badge: 'Optimal Hydraulic Fall',
+      bg: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+      icon: CheckCircle2,
+      advice: `Sunken slab accommodates required ${minSlopeInches.toFixed(1)}" slope easily under tile floor bed. Zero pump needed; natural gravity drainage with dual floor trap protection.`
+    };
+  }, [drainDistance, slabType]);
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 4500);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl border border-slate-700 flex items-center gap-3 animate-fade-in">
+          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+          <span className="text-sm font-medium">{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Top Banner */}
+      <div className="bg-brand-900 text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2">
+        <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded text-[11px] font-bold">
+          LIVE PILOT
+        </span>
+        <span>
+          Now executing projects in <strong>Bareilly &amp; Lucknow</strong>. 18 additional cities currently onboarding crews.
+        </span>
+        <button
+          onClick={() => setActiveModal('waitlist')}
+          className="underline ml-1 font-semibold hover:text-emerald-300 transition-colors"
+        >
+          Join your city waitlist →
+        </button>
+      </div>
+
+      {/* Navigation */}
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-teal-500/20">
+              🏠
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-xl tracking-tight text-slate-900">Housy</span>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-brand-50 text-brand-700 border border-brand-200">
+                  Managed OS
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-500 -mt-0.5 hidden sm:block">Build it. Renovate it. Design it.</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* City Selector */}
+            <div className="relative">
+              <select
+                value={selectedCityId}
+                onChange={(e) => setSelectedCityId(e.target.value)}
+                className="appearance-none bg-slate-100 hover:bg-slate-200/80 border border-slate-300 text-slate-800 text-xs font-semibold py-2 pl-8 pr-8 rounded-lg cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500"
+              >
+                {CITIES.map((city) => (
+                  <option key={city.id} value={city.id}>
+                    {city.name} ({city.status === 'LIVE' ? '🟢 Live' : '⏳ Waitlist'})
+                  </option>
+                ))}
+              </select>
+              <MapPin className="w-3.5 h-3.5 text-brand-600 absolute left-2.5 top-2.5 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-2.5 pointer-events-none" />
+            </div>
+
+            <button
+              onClick={() => setActiveModal('partner')}
+              className="hidden md:inline-flex text-xs font-semibold text-slate-600 hover:text-slate-900 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+            >
+              For Contractors &amp; Designers
+            </button>
+
+            <button
+              onClick={() => {
+                if (selectedCity.status === 'LIVE') {
+                  setActiveModal('consultation');
+                } else {
+                  setActiveModal('waitlist');
+                }
+              }}
+              className="bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-md shadow-brand-600/20 active:scale-95 transition-all flex items-center gap-1.5"
+            >
+              <span>{selectedCity.status === 'LIVE' ? 'Book Site Visit' : 'Notify My City'}</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24 bg-gradient-to-b from-white via-slate-50 to-slate-100 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-800 text-xs font-semibold mb-6">
+              <Sparkles className="w-4 h-4 text-brand-600" />
+              <span>Urban Company for Whole Home Construction &amp; Renovations</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-950 tracking-tight leading-[1.15] mb-6">
+              Build it. Renovate it. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-teal-800">
+                Design it with photo proof.
+              </span>
+            </h1>
+
+            <p className="text-lg text-slate-600 leading-relaxed mb-8">
+              The single operating system for homeowners—especially remote and NRI owners living in another city.
+              Fixed guaranteed quotes, civil safety guardrails, verified local crews, and milestone payments released{' '}
+              <strong>only after you inspect verified photo proof</strong>.
+            </p>
+
+            {/* Hero CTAs */}
+            <div className="flex flex-wrap items-center gap-4 mb-10">
+              <a
+                href="#estimator"
+                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-xl shadow-slate-900/10 active:scale-95 transition-all flex items-center gap-2"
+              >
+                <span>Instant Project Estimator</span>
+                <ChevronDown className="w-4 h-4" />
+              </a>
+
+              <a
+                href="#safety-advisor"
+                className="bg-white hover:bg-slate-100 text-slate-800 font-semibold text-sm px-6 py-3.5 rounded-xl border border-slate-300 shadow-sm active:scale-95 transition-all flex items-center gap-2"
+              >
+                <ShieldCheck className="w-4 h-4 text-brand-600" />
+                <span>Test Structural Safety Advisor</span>
+              </a>
+            </div>
+
+            {/* Core Trust Pillars */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-slate-200/80">
+              <div className="flex items-start gap-2.5">
+                <ShieldCheck className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900 uppercase">Escrow Security</h4>
+                  <p className="text-[11px] text-slate-500">Paid only on approved photo proof</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <BadgeCheck className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900 uppercase">Fixed Pricing</h4>
+                  <p className="text-[11px] text-slate-500">Zero surprise contractor markups</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <Camera className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900 uppercase">Remote Oversight</h4>
+                  <p className="text-[11px] text-slate-500">Built for owners not on-site</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <Wrench className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900 uppercase">Civil Safety</h4>
+                  <p className="text-[11px] text-slate-500">Structural &amp; plumbing validation</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* The 5-Step Customer Loop */}
+      <section className="py-16 bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full">
+              The Remote Homeowner Protocol
+            </span>
+            <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
+              How Housy Protects You From Day One
+            </h2>
+            <p className="text-sm text-slate-600 mt-2">
+              Never get held hostage by contractors demanding advances before completing milestones.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+            {[
+              {
+                step: '01',
+                title: 'Instant Scope',
+                desc: 'Select your city & project type. Get transparent phase-wise cost estimates & material specs instantly.',
+                icon: Compass
+              },
+              {
+                step: '02',
+                title: 'Paid Site Visit',
+                desc: 'Verified architect or civil engineer visits on-site for laser measurement & feasibility assessment.',
+                icon: MapPin
+              },
+              {
+                step: '03',
+                title: 'Fixed Contract',
+                desc: 'Locked itemized quote re-priced from real site measurements. Zero scope-creep or hidden charges.',
+                icon: FileText
+              },
+              {
+                step: '04',
+                title: 'Verified Crews',
+                desc: 'Assigned specialist trade crews (HSY-<CITY>-P###) with verified records, KYC, and background checks.',
+                icon: Users
+              },
+              {
+                step: '05',
+                title: 'Photo Proof Escrow',
+                desc: 'Each milestone requires high-res multi-angle photo proof. You approve from anywhere before funds are paid.',
+                icon: Camera
+              },
+            ].map((s, idx) => (
+              <div
+                key={s.step}
+                className="bg-slate-50 border border-slate-200 rounded-2xl p-5 relative hover:border-brand-500/50 hover:shadow-lg transition-all"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-2xl font-black text-brand-600 font-mono">{s.step}</span>
+                  <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700">
+                    <s.icon className="w-4 h-4 text-brand-600" />
+                  </div>
+                </div>
+                <h3 className="font-bold text-slate-900 text-base mb-1.5">{s.title}</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Interactive Estimator Section */}
+      <section id="estimator" className="py-20 bg-slate-100 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full border border-brand-200">
+              Interactive Tool 01
+            </span>
+            <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
+              Phase-Wise Project Cost Estimator
+            </h2>
+            <p className="text-sm text-slate-600 mt-2">
+              Calibrated with real-time labor and material rates across 20 Indian cities.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+            {/* Left Controls */}
+            <div className="lg:col-span-7 p-6 sm:p-10 border-b lg:border-b-0 lg:border-r border-slate-200 space-y-8">
+              {/* Project Type */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
+                  1. Select Project Archetype
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {PROJECT_TYPES.map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setSelectedProjectId(p.id)}
+                      className={`text-left p-3.5 rounded-xl border text-xs transition-all ${
+                        selectedProjectId === p.id
+                          ? 'border-brand-600 bg-brand-50/50 shadow-sm ring-1 ring-brand-500'
+                          : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100 text-slate-700'
+                      }`}
+                    >
+                      <div className="font-bold text-slate-900 text-sm mb-1">{p.name}</div>
+                      <div className="text-slate-500 text-[11px] line-clamp-1">{p.description}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Area Slider */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                    2. Estimated Area / Size
+                  </label>
+                  <span className="text-sm font-bold text-brand-600 font-mono bg-brand-50 px-2.5 py-0.5 rounded border border-brand-200">
+                    {areaSqFt.toLocaleString()} {selectedProject.unit}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="100"
+                  max="3500"
+                  step="50"
+                  value={areaSqFt}
+                  onChange={(e) => setAreaSqFt(Number(e.target.value))}
+                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
+                />
+                <div className="flex justify-between text-[11px] text-slate-400 mt-1 font-mono">
+                  <span>100 sq ft</span>
+                  <span>1,500 sq ft</span>
+                  <span>3,500 sq ft</span>
+                </div>
+              </div>
+
+              {/* Quality Tier */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
+                  3. Select Material &amp; Finish Tier
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {TIERS.map((tier) => (
+                    <button
+                      key={tier.id}
+                      type="button"
+                      onClick={() => setSelectedTierId(tier.id)}
+                      className={`p-3.5 rounded-xl border text-left transition-all ${
+                        selectedTierId === tier.id
+                          ? 'border-brand-600 bg-brand-50 ring-1 ring-brand-500'
+                          : 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-700'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-bold text-xs text-slate-900">{tier.name}</span>
+                        <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-200 text-slate-700">
+                          {tier.badge}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 leading-snug">{tier.note}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Breakdown Card */}
+            <div className="lg:col-span-5 p-6 sm:p-10 bg-slate-900 text-white flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+                  <div>
+                    <span className="text-xs uppercase tracking-wider text-slate-400 font-mono">City Calibration</span>
+                    <div className="text-base font-bold text-white flex items-center gap-1.5 mt-0.5">
+                      <MapPin className="w-4 h-4 text-brand-400" />
+                      <span>{selectedCity.name}, {selectedCity.state}</span>
+                    </div>
+                  </div>
+                  <span className={`text-[11px] font-mono px-2 py-0.5 rounded font-bold ${
+                    selectedCity.status === 'LIVE' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                  }`}>
+                    {selectedCity.status === 'LIVE' ? 'ACTIVE CREWS' : 'WAITLIST'}
+                  </span>
+                </div>
+
+                <div className="mb-6">
+                  <span className="text-xs uppercase tracking-wider text-slate-400 font-mono">Estimated Total Cost</span>
+                  <div className="text-3xl sm:text-4xl font-extrabold text-white mt-1 tracking-tight">
+                    ₹{calculatedEstimate.minCost.toLocaleString('en-IN')} – ₹{calculatedEstimate.maxCost.toLocaleString('en-IN')}
+                  </div>
+                  <div className="text-xs text-slate-400 mt-1 flex items-center gap-2">
+                    <Clock className="w-3.5 h-3.5 text-brand-400" />
+                    <span>Estimated Duration: <strong>~{calculatedEstimate.weeks} weeks</strong></span>
+                  </div>
+                </div>
+
+                {/* Milestone Breakdown */}
+                <div className="space-y-3 mb-8">
+                  <span className="text-xs uppercase tracking-wider text-slate-400 font-mono block">
+                    Escrow Phase Breakdown
+                  </span>
+                  {calculatedEstimate.phases.map((ph, idx) => (
+                    <div key={idx} className="bg-slate-800/80 rounded-xl p-3 border border-slate-700/60 flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-slate-700 text-brand-300 font-mono font-bold flex items-center justify-center text-[10px]">
+                          {idx + 1}
+                        </span>
+                        <span className="text-slate-200 font-medium">{ph.name}</span>
+                      </div>
+                      <div className="font-mono font-bold text-white">
+                        ₹{ph.amount.toLocaleString('en-IN')}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-slate-800">
+                <button
+                  onClick={() => {
+                    if (selectedCity.status === 'LIVE') {
+                      setActiveModal('consultation');
+                    } else {
+                      setActiveModal('waitlist');
+                    }
+                  }}
+                  className="w-full bg-brand-500 hover:bg-brand-400 text-slate-950 font-extrabold text-sm py-3.5 px-6 rounded-xl shadow-lg shadow-teal-500/20 active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
+                  <span>{selectedCity.status === 'LIVE' ? 'Lock Quote via Paid Site Visit (₹499)' : `Join ${selectedCity.name} Waitlist`}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+                <p className="text-[11px] text-slate-400 text-center mt-2.5">
+                  {selectedCity.status === 'LIVE'
+                    ? '100% refundable if verified specialist does not arrive within agreed slot.'
+                    : 'We notify you the day crew vetting completes in your neighborhood.'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Safety Advisor Simulator Section */}
+      <section id="safety-advisor" className="py-20 bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full border border-brand-200">
+              Safety-Critical Engine (lib/advisor.ts)
+            </span>
+            <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
+              Civil Feasibility &amp; Structural Safety Guard
+            </h2>
+            <p className="text-sm text-slate-600 mt-2">
+              Unqualified contractors demolish walls and create flat drainage slopes that lead to building cracks and sewage leaks.
+              Housy validates feasibility before anyone touches a hammer.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Simulator 1: Wall Demolition */}
+            <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 sm:p-8 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-brand-100 flex items-center justify-center text-brand-700">
+                    <Hammer className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-base">Wall Demolition Feasibility</h3>
+                    <p className="text-xs text-slate-500">Checking for structural load-bearing hazards</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                      Building Construction Type
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { id: 'rcc-frame', label: 'RCC Pillar & Beam Frame' },
+                        { id: 'brick-loadbearing', label: 'Load-Bearing Brick Masonry' }
+                      ].map(t => (
+                        <button
+                          key={t.id}
+                          type="button"
+                          onClick={() => setWallType(t.id)}
+                          className={`p-2.5 rounded-lg border text-xs font-semibold text-left transition-all ${
+                            wallType === t.id ? 'border-brand-600 bg-brand-50 text-brand-900' : 'border-slate-200 bg-white text-slate-700'
+                          }`}
+                        >
+                          {t.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                        Floor Level
+                      </label>
+                      <select
+                        value={floorPosition}
+                        onChange={(e) => setFloorPosition(e.target.value)}
+                        className="w-full bg-white border border-slate-300 text-xs font-medium rounded-lg p-2.5 text-slate-800"
+                      >
+                        <option value="ground">Ground Floor</option>
+                        <option value="upper">Intermediate Floor</option>
+                        <option value="top">Top Floor (Under Roof)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                        Wall Thickness
+                      </label>
+                      <select
+                        value={wallThickness}
+                        onChange={(e) => setWallThickness(e.target.value)}
+                        className="w-full bg-white border border-slate-300 text-xs font-medium rounded-lg p-2.5 text-slate-800"
+                      >
+                        <option value="4.5-inch">4.5 inch (Partition)</option>
+                        <option value="9-inch">9 inch (Structural/Outer)</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Dynamic Advisory Output */}
+              <div className={`p-4 rounded-xl border ${wallFeasibility.bg} transition-all`}>
+                <div className="flex items-center gap-2 mb-2 font-bold text-xs uppercase tracking-wider">
+                  <wallFeasibility.icon className="w-4 h-4 shrink-0" />
+                  <span>{wallFeasibility.badge}</span>
+                </div>
+                <p className="text-xs leading-relaxed">{wallFeasibility.advice}</p>
+              </div>
+            </div>
+
+            {/* Simulator 2: Bathroom Drainage Fall */}
+            <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6 sm:p-8 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-teal-100 flex items-center justify-center text-teal-700">
+                    <Wrench className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-base">Bathroom Drainage Slope Check</h3>
+                    <p className="text-xs text-slate-500">Checking for 1:40 minimum gravity gradient</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <div className="flex justify-between items-center mb-1.5">
+                      <label className="text-xs font-bold uppercase tracking-wider text-slate-600">
+                        Distance from Main Soil Stack
+                      </label>
+                      <span className="text-xs font-mono font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded border border-brand-200">
+                        {drainDistance} Feet
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="3"
+                      max="20"
+                      step="1"
+                      value={drainDistance}
+                      onChange={(e) => setDrainDistance(Number(e.target.value))}
+                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-brand-600"
+                    />
+                    <div className="flex justify-between text-[11px] text-slate-400 mt-1 font-mono">
+                      <span>3 ft (Adjacent)</span>
+                      <span>10 ft</span>
+                      <span>20 ft (Opposite side)</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                      Floor Slab Construction
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { id: 'sunken', label: 'Sunken Slab (Recessed)' },
+                        { id: 'flat', label: 'Flat Conventional Slab' }
+                      ].map(s => (
+                        <button
+                          key={s.id}
+                          type="button"
+                          onClick={() => setSlabType(s.id)}
+                          className={`p-2.5 rounded-lg border text-xs font-semibold text-left transition-all ${
+                            slabType === s.id ? 'border-brand-600 bg-brand-50 text-brand-900' : 'border-slate-200 bg-white text-slate-700'
+                          }`}
+                        >
+                          {s.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Dynamic Advisory Output */}
+              <div className={`p-4 rounded-xl border ${drainFeasibility.bg} transition-all`}>
+                <div className="flex items-center gap-2 mb-2 font-bold text-xs uppercase tracking-wider">
+                  <drainFeasibility.icon className="w-4 h-4 shrink-0" />
+                  <span>{drainFeasibility.badge}</span>
+                </div>
+                <p className="text-xs leading-relaxed">{drainFeasibility.advice}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Table */}
+      <section className="py-20 bg-slate-50 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-3 py-1 rounded-full border border-brand-200">
+              The Market Gap
+            </span>
+            <h2 className="text-3xl font-extrabold text-slate-950 mt-3">
+              Why Traditional Home Construction Breaks Down
+            </h2>
+            <p className="text-sm text-slate-600 mt-2">
+              How Housy creates accountability in an unorganized \$120B industry.
+            </p>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full bg-white rounded-2xl border border-slate-200 shadow-md text-left text-xs sm:text-sm">
+              <thead>
+                <tr className="border-b border-slate-200 bg-slate-100/70">
+                  <th className="py-4 px-5 font-bold text-slate-900">Feature &amp; Guarantee</th>
+                  <th className="py-4 px-5 font-bold text-slate-500">Unorganized Local Thekedar</th>
+                  <th className="py-4 px-5 font-bold text-slate-500">Design Portals (Livspace/Homelane)</th>
+                  <th className="py-4 px-5 font-extrabold text-brand-700 bg-brand-50/80">Housy Managed OS</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                <tr>
+                  <td className="py-4 px-5 font-semibold text-slate-900">Payment Security</td>
+                  <td className="py-4 px-5 text-rose-600 font-medium">Large upfront cash advances</td>
+                  <td className="py-4 px-5 text-slate-600">50% upfront before manufacturing</td>
+                  <td className="py-4 px-5 font-bold text-emerald-700 bg-brand-50/50">100% Photo-Proof Milestone Escrow</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-5 font-semibold text-slate-900">Price Transparency</td>
+                  <td className="py-4 px-5 text-rose-600 font-medium">+40% to +80% hidden extra bills</td>
+                  <td className="py-4 px-5 text-amber-600">High 40% designer markups</td>
+                  <td className="py-4 px-5 font-bold text-emerald-700 bg-brand-50/50">Guaranteed Fixed Quote re-priced on site</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-5 font-semibold text-slate-900">Project Coverage</td>
+                  <td className="py-4 px-5 text-slate-600">Disjointed masons &amp; plumbers</td>
+                  <td className="py-4 px-5 text-amber-600">Interior woodwork only (no civil/build)</td>
+                  <td className="py-4 px-5 font-bold text-emerald-700 bg-brand-50/50">Whole Home: Build, Renovate &amp; Interiors</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-5 font-semibold text-slate-900">Remote Owner Support</td>
+                  <td className="py-4 px-5 text-rose-600 font-medium">Unreliable WhatsApp blurry photos</td>
+                  <td className="py-4 px-5 text-slate-600">Generic customer support ticket</td>
+                  <td className="py-4 px-5 font-bold text-emerald-700 bg-brand-50/50">Mandatory multi-angle photo proof portal</td>
+                </tr>
+                <tr>
+                  <td className="py-4 px-5 font-semibold text-slate-900">Civil &amp; Structural Safety</td>
+                  <td className="py-4 px-5 text-rose-600 font-medium">Zero checks (knocks down load walls)</td>
+                  <td className="py-4 px-5 text-slate-500">Not applicable (cosmetic only)</td>
+                  <td className="py-4 px-5 font-bold text-emerald-700 bg-brand-50/50">Algorithmic Load &amp; Plumbing Slope Guards</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* Contractor & Designer Network */}
+      <section className="py-16 bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-r from-brand-900 via-slate-800 to-slate-900 rounded-3xl p-8 sm:p-12 border border-slate-700 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="max-w-2xl">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-brand-300 bg-brand-500/20 px-3 py-1 rounded-full border border-brand-500/30">
+                Partner Network Portal
+              </span>
+              <h2 className="text-3xl font-extrabold text-white mt-3">
+                Are you a Contractor, Civil Engineer, or Interior Designer?
+              </h2>
+              <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+                Stop chasing clients for late payments and competing in destructive price wars.
+                Housy partners receive verified pre-funded projects with escrow-backed milestone payouts.
+              </p>
+              <div className="flex flex-wrap items-center gap-4 mt-6 text-xs text-slate-400">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-brand-400" /> Guaranteed Weekly Payouts
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-brand-400" /> Zero Bidding Commission
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-brand-400" /> Housy Partner ID Card
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setActiveModal('partner')}
+              className="bg-white hover:bg-slate-100 text-slate-950 font-extrabold text-sm px-6 py-4 rounded-xl shadow-xl active:scale-95 transition-all whitespace-nowrap shrink-0 flex items-center gap-2"
+            >
+              <span>Apply for Partner KYC</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-slate-200 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white font-bold text-base">
+                🏠
+              </div>
+              <div>
+                <span className="font-extrabold text-lg text-slate-900">Housy</span>
+                <p className="text-xs text-slate-500">Urban Company for whole home projects.</p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-6 text-xs text-slate-600 font-medium">
+              <a
+                href="https://github.com/1997agarwal/Housy"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-slate-900 flex items-center gap-1"
+              >
+                <span>GitHub Repository</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+              <a
+                href="https://github.com/1997agarwal/Housy/blob/main/docs/SPEC.md"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-slate-900"
+              >
+                Architecture Spec
+              </a>
+              <a
+                href="https://github.com/1997agarwal/Housy/blob/main/ROADMAP.md"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-slate-900"
+              >
+                Roadmap
+              </a>
+              <a
+                href="https://1997agarwal.github.io"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-brand-600 font-semibold"
+              >
+                Architected by Harshit Agarwal ↗
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-8 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <p>© {new Date().getFullYear()} Housy Operating System. All rights reserved.</p>
+            <p>20 Indian Cities Configured · 265 Unit Tests Passing · 4-File Parity Standard</p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Modal: City Waitlist */}
+      {activeModal === 'waitlist' && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-fade-in">
+            <button
+              onClick={() => setActiveModal(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-4">
+              <MapPin className="w-5 h-5" />
+            </div>
+
+            <h3 className="text-xl font-bold text-slate-900">
+              Join the {selectedCity.name} Priority Waitlist
+            </h3>
+            <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              We are actively vetting contractors and structural engineers in {selectedCity.name}.
+              Enter your mobile number to get fast-tracked as soon as your neighborhood goes live.
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setActiveModal(null);
+                showToast(`You have been added to the priority waitlist for ${selectedCity.name}!`);
+              }}
+              className="mt-6 space-y-4"
+            >
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Your Full Name</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="e.g. Rahul Sharma"
+                  className="w-full text-xs p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">WhatsApp Mobile Number</label>
+                <div className="flex">
+                  <span className="inline-flex items-center px-3 text-xs bg-slate-100 border border-r-0 border-slate-300 rounded-l-lg text-slate-600 font-mono">
+                    +91
+                  </span>
+                  <input
+                    required
+                    type="tel"
+                    pattern="[0-9]{10}"
+                    placeholder="9876543210"
+                    className="w-full text-xs p-3 rounded-r-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Planned Project Type</label>
+                <select className="w-full text-xs p-3 rounded-lg border border-slate-300 bg-white text-slate-800">
+                  <option>Full House Construction</option>
+                  <option>Modular Kitchen Renovation</option>
+                  <option>Bathroom Remodel &amp; Waterproofing</option>
+                  <option>Interior Architecture</option>
+                  <option>Structural Wall Modification</option>
+                </select>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3.5 rounded-lg shadow-md transition-all active:scale-95"
+              >
+                Join Priority Notification Queue
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Site Visit Consultation (Live Cities) */}
+      {activeModal === 'consultation' && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-fade-in">
+            <button
+              onClick={() => setActiveModal(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-4">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+
+            <h3 className="text-xl font-bold text-slate-900">
+              Book Expert Site Measurement (₹499)
+            </h3>
+            <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              A certified Housy architect / senior civil engineer will visit your property in <strong>{selectedCity.name}</strong> to take exact laser measurements and issue your binding fixed contract.
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setActiveModal(null);
+                showToast(`Site visit request confirmed for ${selectedCity.name}! An engineer will contact you.`);
+              }}
+              className="mt-6 space-y-4"
+            >
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="e.g. Ananya Verma"
+                  className="w-full text-xs p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Phone Number (Demo OTP Mode)</label>
+                <div className="flex">
+                  <span className="inline-flex items-center px-3 text-xs bg-slate-100 border border-r-0 border-slate-300 rounded-l-lg text-slate-600 font-mono">
+                    +91
+                  </span>
+                  <input
+                    required
+                    type="tel"
+                    pattern="[0-9]{10}"
+                    placeholder="9876543210"
+                    className="w-full text-xs p-3 rounded-r-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Property Locality / Address</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="e.g. Civil Lines / Gomti Nagar"
+                  className="w-full text-xs p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                />
+              </div>
+
+              <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-[11px] text-slate-600 flex items-center justify-between">
+                <span>Site Consultation Fee</span>
+                <span className="font-bold text-slate-900 font-mono">₹499 (Pay after visit)</span>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs py-3.5 rounded-lg shadow-md transition-all active:scale-95"
+              >
+                Confirm Site Visit Booking
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Contractor & Designer Partner Registration */}
+      {activeModal === 'partner' && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-fade-in">
+            <button
+              onClick={() => setActiveModal(null)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-10 h-10 rounded-xl bg-brand-50 border border-brand-200 flex items-center justify-center text-brand-600 mb-4">
+              <Users className="w-5 h-5" />
+            </div>
+
+            <h3 className="text-xl font-bold text-slate-900">
+              Housy Partner Crew Registration
+            </h3>
+            <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Join Housy's network of verified contractors, civil engineers, and interior designers. Get pre-funded projects with escrow-backed milestone releases.
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setActiveModal(null);
+                showToast('Partner application received! Ops team will call for verification.');
+              }}
+              className="mt-6 space-y-4"
+            >
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Contractor / Firm Name</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="e.g. Apex Civil Contractors"
+                  className="w-full text-xs p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Primary Trade</label>
+                  <select className="w-full text-xs p-3 rounded-lg border border-slate-300 bg-white text-slate-800">
+                    <option>General Contractor</option>
+                    <option>Masonry / Civil</option>
+                    <option>Interior Designer</option>
+                    <option>Modular Carpentry</option>
+                    <option>Plumbing &amp; Sanitary</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">City of Operation</label>
+                  <select className="w-full text-xs p-3 rounded-lg border border-slate-300 bg-white text-slate-800">
+                    {CITIES.map(c => (
+                      <option key={c.id} value={c.name}>{c.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">WhatsApp Contact Phone</label>
+                <div className="flex">
+                  <span className="inline-flex items-center px-3 text-xs bg-slate-100 border border-r-0 border-slate-300 rounded-l-lg text-slate-600 font-mono">
+                    +91
+                  </span>
+                  <input
+                    required
+                    type="tel"
+                    pattern="[0-9]{10}"
+                    placeholder="9876543210"
+                    className="w-full text-xs p-3 rounded-r-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Team Size &amp; Years in Business</label>
+                <input
+                  required
+                  type="text"
+                  placeholder="e.g. 12 crew members, 8 years experience"
+                  className="w-full text-xs p-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-brand-500"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3.5 rounded-lg shadow-md transition-all active:scale-95"
+              >
+                Submit for KYC &amp; Onboarding
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
