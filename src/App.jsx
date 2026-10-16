@@ -1827,6 +1827,19 @@ export default function App() {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
+                const formEl = e.currentTarget;
+                const name = formEl.querySelector('input[type="text"]')?.value || 'Guest';
+                const phone = formEl.querySelector('input[type="tel"]')?.value || '';
+                fetch('https://formspree.io/f/mqkenwgb', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                  body: JSON.stringify({
+                    project: 'Housy',
+                    name,
+                    subject: `Housy Priority Waitlist: ${selectedCity?.name || 'City'}`,
+                    message: `Name: ${name}\nWhatsApp: +91 ${phone}\nCity: ${selectedCity?.name || 'N/A'}`
+                  })
+                }).catch(() => {});
                 setActiveModal(null);
                 showToast(`You have been added to the priority waitlist for ${selectedCity.name}!`);
               }}
